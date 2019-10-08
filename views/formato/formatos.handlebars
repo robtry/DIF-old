@@ -1,0 +1,26 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Id Niño</th>
+			<th scope="col">Tipo</th>
+			<th scope="col">Fecha Creación</th>
+			<th scope="col">Fecha Actualización</th>
+			<th scope="col">Descripción</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each format}}
+			<tr>
+				<td>{{id}}</td>
+				<td>{{id_infante}}</td>
+				<td>{{id_tipo}}</td>
+				<td>{{fecha_inicio}}</td>
+				<td>{{fecha_actualizacion}}</td>
+				<td>{{descripcion}}</td>
+			</tr>
+		{{else}}
+			<p>Aún no hay registros</p>
+		{{/each}}
+	</tbody>
+</table>

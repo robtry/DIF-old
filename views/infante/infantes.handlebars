@@ -1,0 +1,32 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Expediente</th>
+			<th scope="col">Nombre</th>
+			<th scope="col">Apellido Paterno</th>
+			<th scope="col">Apellido Materno</th>
+			<th scope="col">Escolaridad</th>
+			<th scope="col">Ocupacion</th>
+			<th scope="col">Sexo</th>
+			<th scope="col">Fecha de Nacimiento</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each infa}}
+			<tr>
+				<td>{{id}}</td>
+				<td>{{exp}}</td>
+				<td>{{nombre}}</td>
+				<td>{{app}}</td>
+				<td>{{apm}}</td>
+				<td>{{escolaridad}}</td>
+				<td>{{ocupacion}}</td>
+				<td>{{sexo}}</td>
+				<td>{{fecha_nacimiento}}</td>
+			</tr>
+		{{else}}
+			<p>Aún no hay registros</p>
+		{{/each}}
+	</tbody>
+</table>

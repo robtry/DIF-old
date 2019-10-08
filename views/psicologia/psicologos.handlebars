@@ -1,0 +1,24 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Nombre</th>
+			<th scope="col">Apellido Paterno</th>
+			<th scope="col">Apellido Materno</th>
+			<th scope="col">No. Cedula</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each psi}}
+			<tr>
+				<td>{{id}}</td>
+				<td>{{nombre}}</td>
+				<td>{{app}}</td>
+				<td>{{apm}}</td>
+				<td>{{no_cedula}}</td>
+			</tr>
+		{{else}}
+			<p>Aún no hay registros</p>
+		{{/each}}
+	</tbody>
+</table>
