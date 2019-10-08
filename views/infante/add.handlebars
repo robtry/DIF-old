@@ -1,0 +1,64 @@
+<div class="container">
+	<div class="py-5 text-center">
+		<h2>Agregar Niño</h2>
+		<p class="lead">Llena todo los campos</p>
+	</div>
+
+	<div class="container">
+		<h4 class="mb-3">Información Personal</h4>
+		{{#each errors}}
+			<div class="invalid-feedbacktl">
+				<p>{{text}}</p>
+			</div>
+		{{/each}}
+		<form action="/agregar_nino" method="POST" class="needs-validation" novalidate>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="nombre">Nombre(s)</label>
+					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="app">Apellido Paterno</label>
+					<input type="text" class="form-control" id="app" name="app" placeholder="" value={{app}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="apm">Apellido Materno</label>
+					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value={{apm}}>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="exp">Expediente</label>
+					<input type="text" class="form-control" id="exp" name= "exp" placeholder="" value={{exp}}>
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="escolaridad">Escolaridad</label>
+					<input type="text" class="form-control" id="escolaridad" name= "escolaridad" placeholder="" value={{escolaridad}}>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="ocupacion">Ocupación</label>
+					<input type="text" class="form-control" id="ocupacion" name="ocupacion" placeholder="" value={{ocupacion}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="sexo">Sexo</label>
+					<select class="custom-select d-block w-100" id="sexo" name="sexo" required>
+					<option value="">Choose...</option>
+					<option value="m">Másculino</option>
+					<option value="f">Femenino</option>
+					</select>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="fecha_naciemiento">Fecha Nacimiento</label>
+					<input type="date" class="form-control" id="fecha_naciemiento" name="fecha_naciemiento" value={{fecha_naciemiento}} min="1994-01-31" max="2018-12-31">					
+				</div>
+			</div>
+
+
+			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+		</form>
+	</div>
+</div>

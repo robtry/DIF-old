@@ -15,13 +15,18 @@ sequelize
 
 const app = express();
 
+// HandleBars
 app.engine('handlebars', exphbs({defaultLayout: 'home'}))
 app.set('view engine', 'handlebars')
 
+//Body-Parser
+app.use(bodyParser.urlencoded({ extended : false }));
+
+// Static dir
 app.use(express.static(path.join(__dirname, 'public')));
 
-const PORT = process.env.PORT || 5000;
 
+const PORT = process.env.PORT || 5000;
 
 app.use('/', require('./routes/main'))
 

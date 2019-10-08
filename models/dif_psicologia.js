@@ -34,6 +34,12 @@ const infanteSchema = sequelize.define('Infante', {
 });
 
 const psicologoSchema = sequelize.define('Psicologo', {
+    id: {
+        type: Sequelize.UUID,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
     nombre: {
         type: Sequelize.STRING,
         allowNull: false
@@ -45,12 +51,13 @@ const psicologoSchema = sequelize.define('Psicologo', {
         type: Sequelize.STRING
     },
     no_cedula: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
     },
-    /*ip_prefil: {
+    id_perfil: {
         type: Sequelize.INTEGER,
         allowNull: false
-    }*/
+    }
 },{
     freezeTableName: true,
     underscored: true,

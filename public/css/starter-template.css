@@ -15,6 +15,13 @@ body {
 	user-select: none;
 }
 
+.invalid-feedbacktl{
+	width: 100%;
+    margin-top: .25rem;
+    font-size: 130%;
+    color: #dc3545;
+}
+
 @media (min-width: 768px) {
 	.bd-placeholder-img-lg {
 		font-size: 3.5rem;
