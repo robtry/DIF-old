@@ -1,0 +1,30 @@
+{
+  "name": "dif-psicologia",
+  "version": "1.0.0",
+  "description": "Proyecto de Base de Datos 2019. Parte de psicología.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev" : "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robtry/dif-psicologia.git"
+  },
+  "author": "rob",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robtry/dif-psicologia/issues"
+  },
+  "homepage": "https://github.com/robtry/dif-psicologia#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mssql": "^5.1.0",
+    "nodemon": "^1.19.3",
+    "sequelize": "^5.19.4",
+    "tedious": "^6.4.0"
+  }
+}
