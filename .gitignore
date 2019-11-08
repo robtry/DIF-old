@@ -139,3 +139,7 @@ typings/
 .dynamodb/
 
 # End of https://www.gitignore.io/api/linux,macos
+
+# Key
+
+config/keys_dev.js
