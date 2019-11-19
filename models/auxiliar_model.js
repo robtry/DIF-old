@@ -2,12 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize_db = require('../config/keys');
 
 const derechoSchema = sequelize_db.define('Derecho', {
-	id: {
-		type: Sequelize.UUID,
-		allowNull: false,
-		primaryKey: true,
-		autoIncrement: true
-	},
+	id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 	articulo: {type: Sequelize.STRING, allowNull: false},
 	derecho:  {type: Sequelize.STRING, allowNull: false}
 },{
@@ -17,13 +12,18 @@ const derechoSchema = sequelize_db.define('Derecho', {
 }
 );
 
+const enfermedadSchema = sequelize_db.define('Enfermedad',{
+	id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+	nombre: { type: Sequelize.STRING, allowNull: false }
+	},{
+		freezeTableName: true,
+		//underscored: true,
+		timestamps: false,
+	}
+);
+
 const escolaridadSchema = sequelize_db.define('Escolaridad',{
-		id: {
-			type: Sequelize.UUID,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true
-		},
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		nivel: {type: Sequelize.STRING, allowNull: false}
 	},{
 		freezeTableName: true,
@@ -34,28 +34,8 @@ const escolaridadSchema = sequelize_db.define('Escolaridad',{
 
 
 const tipoPuSchema = sequelize_db.define('TipoPU', {
-		id:{ 
-			type: Sequelize.UUID,
-			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true
-		},
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		tipo: { type: Sequelize.STRING, allowNull: false }
-	},{
-		freezeTableName: true,
-		//underscored: true,
-		timestamps: false,
-	}
-);
-
-const enfermedadSchema = sequelize_db.define('Enfermedad',{
-	id:{ 
-		type: Sequelize.UUID,
-		allowNull: false,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	nombre: { type: Sequelize.STRING, allowNull: false }
 	},{
 		freezeTableName: true,
 		//underscored: true,

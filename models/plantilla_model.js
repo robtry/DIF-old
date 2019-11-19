@@ -2,16 +2,20 @@ const Sequelize = require('sequelize');
 const sequelize_db = require('../config/keys');
 const tipoSchema = require('./auxiliar_model').tipoPu;
 const nnaSchema = require('./nna_model').nna;
-const denunciaSchema = require('./denuncia_model').denuncia;
 
+const datoConsistenteSchema = sequelize_db.define('Dato_Consistente',{
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+		dato: {type: Sequelize.STRING, allowNull: false},
+		es_multivalor: {type: Sequelize.BOOLEAN, allowNull: false}
+	},{
+		freezeTableName: true,
+		underscored: true,
+		timestamps: false,
+	}
+);
 
 const plantillaSchema = sequelize_db.define('Plantilla',{
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_tipo: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
@@ -26,16 +30,12 @@ const plantillaSchema = sequelize_db.define('Plantilla',{
 	},{
 		freezeTableName: true, 
 		underscored: true, //not use camel case
+		//timestamp true
 	}
 );
 
-const preguntaSchema = sequelize_db.define('Pregunta', {
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+const campoSchema = sequelize_db.define('Campo', {
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_plantilla: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
@@ -46,7 +46,16 @@ const preguntaSchema = sequelize_db.define('Pregunta', {
 		},
 		pregunta:     {type: Sequelize.STRING, allowNull: false},
 		info_llenado: {type: Sequelize.STRING, allowNull: false},
-		es_cerrada:   {type: Sequelize.BOOLEAN, allowNull: false}
+		es_cerrada:   {type: Sequelize.BOOLEAN, allowNull: false},
+		es_consistente:   {type: Sequelize.BOOLEAN, allowNull: false},
+		id_dato_consistente: {
+			type: Sequelize.INTEGER,
+			references: {
+				model : datoConsistenteSchema,
+				key : 'id'
+			}
+		}
+
 	}, {
 		freezeTableName: true,
 		underscored: true,
@@ -55,17 +64,12 @@ const preguntaSchema = sequelize_db.define('Pregunta', {
 );
 
 const opcionSchema = sequelize_db.define('Opcion', {
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
-		id_pregunta: {
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+		id_campo: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
 			references: {
-				model : preguntaSchema,
+				model : campoSchema,
 				key : 'id'
 			}
 		},
@@ -78,12 +82,7 @@ const opcionSchema = sequelize_db.define('Opcion', {
 );
 
 const formatSchema = sequelize_db.define('Formato', {
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_nna: {
 			type: Sequelize.STRING,
             allowNull: false,
@@ -99,14 +98,6 @@ const formatSchema = sequelize_db.define('Formato', {
 				model : plantillaSchema,
 				key : 'id'
 			}
-		},
-		id_denuncia: {
-			type: Sequelize.INTEGER,
-			allowNull: false,
-			references: {
-				model : denunciaSchema,
-				key : 'id'
-			}
 		}
 	}, {
 		freezeTableName: true,
@@ -114,13 +105,8 @@ const formatSchema = sequelize_db.define('Formato', {
 	}
 );
 
-const resSchema = sequelize_db.define('',{
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+const resSchema = sequelize_db.define('Respuesta',{
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_formato: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
@@ -129,51 +115,40 @@ const resSchema = sequelize_db.define('',{
 				key : 'id'
 			}
 		},
-		id_pregunta: {
+		id_campo: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
 			references: {
-				model : preguntaSchema,
+				model : campoSchema,
+				key : 'id'
+			}
+		},
+		respuetsa: {type: Sequelize.STRING, allowNull:false,defaultValue:''}
+	},{
+		freezeTableName: true,
+		underscored: true,
+		timestamps: true,
+	}
+);
+
+const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+		id_respuesta: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			references: {
+				model : resSchema,
 				key : 'id'
 			}
 		},
 		id_opcion: {
 			type: Sequelize.INTEGER,
+			allowNull: false,
 			references: {
 				model : opcionSchema,
 				key : 'id'
 			}
 		},
-		respuetsa: {type: Sequelize.STRING}
-	},{
-		freezeTableName: true,
-		underscored: true,
-		timestamps: false,
-	}
-);
-
-const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
-	id: {
-		type: Sequelize.UUID,
-		autoIncrement: true,
-		primaryKey: true,
-		allowNull: false,
-	},
-	id_respuesta: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		references: {
-			model : resSchema,
-			key : 'id'
-		}
-	},
-	id_opcion: {
-		type: Sequelize.INTEGER,
-		references: {
-			model : opcionSchema,
-			key : 'id'
-		}
-	},
 	},{
 		freezeTableName: true,
 		underscored: true,
@@ -183,10 +158,10 @@ const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 
 module.exports = {
 	plantilla : plantillaSchema,
-	pregunta : preguntaSchema,
+	campo : campoSchema,
 	opcion : opcionSchema,
 	formato : formatSchema,
 	respuesta : resSchema,
-	resop : resOpSchema
-
+	resop : resOpSchema,
+	datoConst : datoConsistenteSchema
 }

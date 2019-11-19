@@ -3,30 +3,19 @@ const sequelize_db = require('../config/keys');
 const derechoSchema = require('./auxiliar_model').derecho;
 
 const denunciaSchema = sequelize_db.define('Denuncia',{
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		averiguacion_previa: {type: Sequelize.STRING},
 		seguimineto_acta:    {type: Sequelize.STRING},
 		fecha_denuncia:      {type: Sequelize.DATEONLY, allowNull: false},
 	},{
 		freezeTableName: true,
-		underscored: true,
+		//underscored: true,
 		timestamps: false,
 	}
 );
 
-const derechoVulSchema = sequelize_db.define('Derecho_Vulnerado',
-	{
-		id: {
-			type: Sequelize.UUID,
-			autoIncrement: true,
-			primaryKey: true,
-			allowNull: false,
-		},
+const derechoVulSchema = sequelize_db.define('Derecho_Vulnerado', {
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_denuncia: {
 			type: Sequelize.INTEGER,
 			allowNull: false,

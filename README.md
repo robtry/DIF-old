@@ -7,14 +7,15 @@ Proyecto Base de Datos 2019.
 
 - SQL Server (Microsoft) | MSSQL
 - Nodejs
-- Express
-- Sequelize
+- - Handlebars
+- - Express
+- - Sequelize
 
 ## Directory
 
 ### Models
 
-Here is the location of the tables in DB
+Here is the location of the tables in DB, for this version Migrations are not used.
 
 ```txt
 =-=-=-=-=-=-=-=-=-=-=-=
@@ -29,16 +30,18 @@ usuario_model.js
 -Usuario_Formato
 =-=-=-=-=-=-=-=-=-=-=-=
 plantilla_model.js
+-Dato_Consistente
 -Plantilla
 -Formato
 -Opcion
--Pregunta
+-Campo
 -Respuesta
 -Respuesta_Opcion
 =-=-=-=-=-=-=-=-=-=-=-=
 nna_model.js
 -NNA
 -NNA_Derecho
+-NNA_Enfermedad
 =-=-=-=-=-=-=-=-=-=-=-=
 denuncia_model.js
 -Denuncia
@@ -47,12 +50,18 @@ denuncia_model.js
 ```
 
 ## To Do
-* [ ] Change small ints
+
+* [x] Change small ints | not implemented | https://github.com/sequelize/sequelize/issues/9397
 * [ ] Use gravatar
-* [ ] Add validations
+* [ ] Add validations (unique also)
 * [ ] Implement user roles (admin)
 * [ ] Create login
 * [ ] Toggle active class on left menu
 * [ ] Pagination
 * [ ] Add breadcumbs
 * [ ] Add edit option
+
+### In the near future
+
+* [ ] Implement sequelize migration 
+* [ ] Scopes

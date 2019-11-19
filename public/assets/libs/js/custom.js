@@ -4,7 +4,7 @@ $(document).ready(function(){
 		const id = $target.attr('data-id');
 		//const role = $('#role').attr('data-role');
 		if(!id){
-			console.log($target);
+			location.reload();
 			return;
 		}
 		else{
