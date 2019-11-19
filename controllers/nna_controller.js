@@ -1,4 +1,5 @@
-const nnaSchema = require('../models/dif_psicologia').Infante;
+const nnaSchema = require('../models/nna_model').nna;
+const nnaDEr
 
 module.exports = {
 	getNinos : (req, res) => {

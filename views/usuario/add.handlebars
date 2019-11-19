@@ -1,17 +1,33 @@
 <div class="container">
 	<div class="py-5 text-center">
-		<h2>Agregar Psicólogo</h2>
+		<h2>Agregar {{tipo}}</h2>
 		<p class="lead">Llena todo los campos</p>
 	</div>
 
+	{{#if errors.length}}
+		<div class="page-section" id="overview">
+			<!-- ============================================================== -->
+			<!-- overview  -->
+			<!-- ============================================================== -->
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<h2>Errores</h2>
+					<ul class="list-unstyled arrow">
+						{{#each errors}}
+							<li>{{text}}</li>
+						{{/each}}
+					</ul>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- end overview  -->
+			<!-- ============================================================== -->
+		</div>
+	{{/if}}
+
 	<div class="container">
 		<h4 class="mb-3">Información Personal</h4>
-		{{#each errors}}
-			<div class="invalid-feedbacktl">
-				<p>{{text}}</p>
-			</div>
-		{{/each}}
-		<form action="/agregar_psicologo" method="POST" class="needs-validation" novalidate>
+		<form action="/usuario/agregar" method="POST" class="needs-validation" novalidate>
 			<div class="row">
 				<div class="col-md-4 mb-3">
 					<label for="nombre">Nombre(s)</label>
@@ -26,11 +42,23 @@
 					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value={{apm}}>
 				</div>
 			</div>
-
-			<div class="mb-3">
-				<label for="no_cedula">Número de Cedula</label>
-				<input type="text" class="form-control" id="no_cedula" name= "no_cedula" placeholder="" value={{no_cedula}}>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="no_cedula">Número de Cedula</label>
+					<input type="text" class="form-control" id="no_cedula" name= "no_cedula" placeholder="" value={{no_cedula}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="nickname">Nickname</label>
+					<input type="text" class="form-control" id="nickname" name= "nickname" placeholder="" value={{nickname}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" name= "password" placeholder="" value={{password}}>
+				</div>
 			</div>
+
+			 <input type="hidden" id="role" name="role" value={{role}}>
+			 <input type="hidden" id="kind" name="kind" value={{tipo}}>
 
 			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
 		</form>

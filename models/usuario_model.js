@@ -10,6 +10,7 @@ const userSchema = sequelize_db.define('Usuario', {
 			allowNull: false,
 		},
 		nickname:  {type: Sequelize.STRING, allowNull: false},
+		pass:      {type: Sequelize.STRING, allowNull: false},
 		nombre:    {type: Sequelize.STRING, allowNull: false},
 		app:       {type: Sequelize.STRING, allowNull: false},
 		apm:       {type: Sequelize.STRING, allowNull: false},

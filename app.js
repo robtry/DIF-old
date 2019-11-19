@@ -7,7 +7,7 @@ const sequelize = require('./config/keys');
 //Routes
 const welcomeRouter = require('./routes/welcomeRoute');
 const usuarioRouter = require('./routes/usuarioRoute');
-const infanteRouter = require('./routes/infanteRoute');
+//const infanteRouter = require('./routes/infanteRoute');
 
 // Database Connection
 sequelize
@@ -22,7 +22,7 @@ sequelize
 const app = express();
 
 // HandleBars
-app.engine('handlebars', exphbs({defaultLayout: 'home'}))
+app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 //Body-Parser

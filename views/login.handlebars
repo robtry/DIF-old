@@ -1,14 +1,32 @@
-<form class="form-signin">
-	<h1 class="h3 mb-3 font-weight-normal">Iniciar Sesión</h1>
-	<label for="inputEmail" class="sr-only">Nickname <address></address></label>
-	<input type="email" id="inputEmail" class="form-control" placeholder="nickname" required autofocus>
-	<label for="inputPassword" class="sr-only">Password</label>
-	<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-	<div class="checkbox mb-3">
-		<label>
-		<input type="checkbox" value="remember-me"> Recordarme
-		</label>
+<!-- ============================================================== -->
+<!-- login page  -->
+<!-- ============================================================== -->
+<div class="splash-container">
+	<div class="card ">
+		<div class="card-header text-center">
+			<span class="splash-description">DIF</span>
+			<span class="splash-description">Atizapán</span>
+		</div>
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+				</div>
+				<div class="form-group">
+					<input class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<label class="custom-control custom-checkbox">
+						<input class="custom-control-input" type="checkbox"><span class="custom-control-label">Recordarme</span>
+					</label>
+				</div>
+				{{!-- <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresar</button> --}}
+				<a  class="btn btn-primary btn-lg btn-block" href="/home"> Ingresar </a>
+			</form>
+		</div>
 	</div>
-	<button class="btn btn-lg btn-primary" type="submit">Ingresar</button>
-	<p class="mt-5 mb-3 text-muted">&copy; 2019</p>
-</form>
+</div>
+
+<!-- ============================================================== -->
+<!-- end login page  -->
+<!-- ============================================================== -->

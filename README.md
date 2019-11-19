@@ -20,6 +20,7 @@ Here is the location of the tables in DB
 =-=-=-=-=-=-=-=-=-=-=-=
 auxiliar_model.js
 -Derecho
+-Enfermedad
 -Escolaridad
 -TipoPU
 =-=-=-=-=-=-=-=-=-=-=-=
@@ -47,6 +48,11 @@ denuncia_model.js
 
 ## To Do
 * [ ] Change small ints
-* [ ] Change all frontend
+* [ ] Use gravatar
 * [ ] Add validations
-* [ ] Habilitar opciones de admin
+* [ ] Implement user roles (admin)
+* [ ] Create login
+* [ ] Toggle active class on left menu
+* [ ] Pagination
+* [ ] Add breadcumbs
+* [ ] Add edit option

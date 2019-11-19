@@ -48,10 +48,24 @@ const tipoPuSchema = sequelize_db.define('TipoPU', {
 	}
 );
 
-
+const enfermedadSchema = sequelize_db.define('Enfermedad',{
+	id:{ 
+		type: Sequelize.UUID,
+		allowNull: false,
+		primaryKey: true,
+		autoIncrement: true
+	},
+	nombre: { type: Sequelize.STRING, allowNull: false }
+	},{
+		freezeTableName: true,
+		//underscored: true,
+		timestamps: false,
+	}
+);
 
 module.exports = {
 	derecho: derechoSchema,
 	tipoPu : tipoPuSchema,
-	escolaridad : escolaridadSchema
+	escolaridad : escolaridadSchema,
+	enfermedad : enfermedadSchema
 }

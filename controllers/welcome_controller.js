@@ -1,11 +1,10 @@
 module.exports = {
 
-	welcome: (req, res) => {
-		res.render('welcome');
+	login: (req, res) => {
+		res.render('login', {layout: 'login'});
 	},
 
-	login: (req, res) => {
-		res.render('login');
-	},
-	
+	dashboard: (req, res) => {
+		res.render('dashboard');
+	}
 }

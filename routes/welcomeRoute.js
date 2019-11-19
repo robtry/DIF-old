@@ -3,8 +3,7 @@ const router = express.Router();
 const welcomeController = require('../controllers/welcome_controller');
 
 //Ruta cuando se ingresa
-router.get('/', welcomeController.welcome);
-router.get('/login', welcomeController.login);
-
+router.get('/', welcomeController.login);
+router.get('/home', welcomeController.dashboard);
 
 module.exports = router;
