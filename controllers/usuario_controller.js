@@ -73,6 +73,14 @@ module.exports = {
 		}
 	},
 
+	getEditUser: (req, res) => {
+		usuarioSchema.findByPk(req.params.id).then(user => {
+			//console.log(user)
+			console.log(user.nickname)
+			//res.render('usuario/add',{user});
+		  })
+	},
+
 	deleteUser: (req, res) => {
 		console.log(req.params.id);
 		//console.log(req.body['role']);

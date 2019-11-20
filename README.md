@@ -52,7 +52,6 @@ denuncia_model.js
 ## To Do
 
 * [x] Change small ints | not implemented | https://github.com/sequelize/sequelize/issues/9397
-* [ ] Use gravatar
 * [ ] Add validations (unique also)
 * [ ] Implement user roles (admin)
 * [ ] Create login
@@ -60,6 +59,12 @@ denuncia_model.js
 * [ ] Pagination
 * [ ] Add breadcumbs
 * [ ] Add edit option
+* [ ] Attatch files
+
+## To Fix
+
+* [ ] Warnigns in html
+* [ ] Ajax delete
 
 ### In the near future
 

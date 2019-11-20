@@ -4,11 +4,11 @@ $(document).ready(function(){
 		const id = $target.attr('data-id');
 		//const role = $('#role').attr('data-role');
 		if(!id){
-			location.reload();
+			//location.reload();
 			return;
 		}
 		else{
-			//console.log(id);
+			console.log(id);
 		}
 
 		$.ajax({

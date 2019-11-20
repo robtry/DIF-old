@@ -2,15 +2,21 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
-const sequelize = require('./config/keys');
+const sequelize_con = require('./config/keys');
+
+// Override timezone formatting for MSSQL
+require('sequelize').DATE.prototype._stringify = function _stringify(date, options) {
+  return this._applyTimezone(date, options).format('YYYY-MM-DD HH:mm:ss.SSS');
+};
+
 
 //Routes
 const welcomeRouter = require('./routes/welcomeRoute');
 const usuarioRouter = require('./routes/usuarioRoute');
-//const infanteRouter = require('./routes/infanteRoute');
+const nnaRouter     = require('./routes/nnaRoute');
 
 // Database Connection
-sequelize
+sequelize_con
   .authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
@@ -37,7 +43,7 @@ const PORT = process.env.PORT || 5000;
 // Set up Routes
 app.use(welcomeRouter);
 app.use(usuarioRouter);
-//app.use(infanteRouter);
+app.use(nnaRouter);
 
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`))

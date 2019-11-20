@@ -44,10 +44,11 @@ const campoSchema = sequelize_db.define('Campo', {
 				key : 'id'
 			}
 		},
-		pregunta:     {type: Sequelize.STRING, allowNull: false},
-		info_llenado: {type: Sequelize.STRING, allowNull: false},
-		es_cerrada:   {type: Sequelize.BOOLEAN, allowNull: false},
-		es_consistente:   {type: Sequelize.BOOLEAN, allowNull: false},
+		pregunta:       {type: Sequelize.STRING, allowNull: false},
+		info_llenado:   {type: Sequelize.STRING, allowNull: false},
+		es_cerrada:     {type: Sequelize.BOOLEAN, allowNull: false},
+		es_consistente: {type: Sequelize.BOOLEAN, allowNull: false},
+		es_archivo:     {type: Sequelize.BOOLEAN, allowNull: false},
 		id_dato_consistente: {
 			type: Sequelize.INTEGER,
 			references: {
