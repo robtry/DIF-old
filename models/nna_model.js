@@ -6,35 +6,39 @@ const denunciaSchema = require('./denuncia_model').denuncia;
 const enfermedadSchema = require('./auxiliar_model').enfermedad;
 
 const nnaSchema = sequelize_db.define('NNA', {
-        exp: {type: Sequelize.STRING, allowNull: false, primaryKey: true, unique: true},
+        exp: {type: Sequelize.STRING, allowNull: false, primaryKey: true, unique: true, validate:{
+            notEmpty: { msg:"El campo Expediente no puede estar vacio"},
+        }},
         nombre: {type: Sequelize.STRING, allowNull: false, validate:{
-            len: { args: [[2,20]], msg: "El nombre esta fuera de los rangos permitidos [2,20]" }, 
+            len: { args: [2,20], msg: "El nombre esta fuera de los rangos permitidos [2,20]" }, 
             notEmpty: { msg:"El campo nombre no puede estar vacio"}, 
-            isAlpha: {msg: "Solo se aceptan letras en el nombre"} 
+            isAlpha: {msg: "Solo se aceptan letras en el Nombre"} 
         }},
         app: {type: Sequelize.STRING, validate:{
-            len: { args: [[2,20]], msg: "El apellidoP esta fuera de los rangos permitidos [2,20]" },
-            notEmpty: { msg:"El campo apellidoP no puede estar vacio"}, 
-            isAlpha: {msg: "Solo se aceptan letras en el apellidoP"}
+            len: { args: [2,20], msg: "El Apellido Paterno esta fuera de los rangos permitidos [2,20]" },
+            notEmpty: { msg:"El campo Apellido Paterno no puede estar vacio"}, 
+            isAlpha: {msg: "Solo se aceptan letras en el Apellido Paterno"}
         }},
-        apm: {type: Sequelize.STRING,  validate:{
-            len: { args: [[2,20]], msg: "El apellidoM esta fuera de los rangos permitidos [2,20]" },
-            notEmpty: { msg:"El campo apellidoM no puede estar vacio"}, 
-            isAlpha: {msg: "Solo se aceptan letras en el apellidoM"}
+        apm: {type: Sequelize.STRING, validate:{
+            len: { args: [2,20], msg: "El Apellido Materno esta fuera de los rangos permitidos [2,20]" },
+            notEmpty: { msg:"El campo Apellido Materno no puede estar vacio"}, 
+            isAlpha: {msg: "Solo se aceptan letras en el Apellido Materno"}
         }},
         fecha_nacimiento: {type: Sequelize.DATEONLY, validate:{
-            isDate: { msg:"Ingrese una fecha valida"},
-            isBefore: { args: [[Date.today]], msg: "Ingrese una fecha valida"}
+            isDate: { msg:"Ingrese una fecha válida"},
+            isBefore: { args: [new Date().toISOString().slice(0,10)], msg: "Ingrese una fecha válida"}
         }},
         sexo: {type: Sequelize.CHAR, validate:{
-            isIn: {args: [['m','f']], msg: "Ingrese un sexo valido"}
+            isIn: {args: ['m','f'], msg: "Ingrese un sexo válido"}
         }},
         ocupacion: {type: Sequelize.STRING},
         peso:  {type: Sequelize.FLOAT, validate:{
-            isFloat: { msg: "Ingrese un peso valido"}
+            isFloat: { msg: "Ingrese un peso válido"},
+            min: { args: [1], msg: "Peso inválido"}
         }},
         talla: {type: Sequelize.FLOAT, validate:{
-            isFloat: { msg: "Ingrese una talla valida"}
+            isFloat: { msg: "Ingrese una talla válida"},
+            min: { args: [1], msg: "Talla inválida"}
         }},
         id_escolaridad: {
             type: Sequelize.INTEGER,

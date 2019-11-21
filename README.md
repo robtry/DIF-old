@@ -60,6 +60,7 @@ denuncia_model.js
 * [ ] Add breadcumbs
 * [ ] Add edit option
 * [ ] Attatch files
+* [ ] Unique no_cedula on User and exp on NNA and pass null empty values
 
 ## To Fix
 
