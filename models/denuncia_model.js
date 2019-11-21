@@ -6,8 +6,11 @@ const denunciaSchema = sequelize_db.define('Denuncia',{
 		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		averiguacion_previa: {type: Sequelize.STRING},
 		seguimineto_acta:    {type: Sequelize.STRING},
-		fecha_denuncia:      {type: Sequelize.DATEONLY, allowNull: false},
-	},{
+		fecha_denuncia:      {type: Sequelize.DATEONLY, allowNull: false, validate: {
+			isDate: { msg: "Ingrese fecha valida"}
+		}},
+	},
+	{
 		freezeTableName: true,
 		//underscored: true,
 		timestamps: false,
