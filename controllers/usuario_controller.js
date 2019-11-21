@@ -23,62 +23,95 @@ module.exports = {
 					const tipo = getTipo(role);
 					res.render('usuario/usuarios', {usr, tipo, role})
 				})
-				.catch(err => console.log(err))
+				.catch(err => console.log(err));
 		}
 	},
 
 	getAddUsuario: (role) => {
 		const tipo = getTipo(role);
 		return (req, res) => {
-			res.render('usuario/add', {tipo, role})
+			res.render('usuario/add', {show:true, tipo, role, route:"/usuario/agregar"})
 		}
 	},
 
 	//post
 	addUsuario:  (req, res) => {
-
-		let {nombre, app, apm, no_cedula, nickname, password, role, tipo} = req.body;
-		let errors  = [];
-		if(!nombre){ errors.push({text : "Nombre es un campo obligatorio"}); }
-		if(!app){ errors.push({text : "Apellido paterno es un campo obligatorio"}); }
-		if(!apm){ errors.push({text : "Apellido materno es un campo obligatorio"}); }
-		if(!no_cedula){ errors.push({text : "Cédula es un campo obligatorio"}); }
-		if(!password){ errors.push({text : "Es necesario ingresar una contraseña"}); }
-		if(!nickname){ errors.push({text : "Debe ingresar un nickname"}); }
-
-		if(errors.length > 0){
-			res.render('usuario/add', {
-				errors,
-				nombre,
-				app,
-				apm,
-				no_cedula,
-				nickname,
-				password : "",
-				role,
-				tipo
+		let {nombre, app, apm, no_cedula, nickname, password, role, kind} = req.body;
+		usuarioSchema.create({
+			nickname,
+			pass: password,
+			nombre,
+			app,
+			apm,
+			no_cedula,
+			id_tipo: role
+		})
+			.then(usr => { res.redirect(getRouteWithTipo(role)); })
+			.catch(err => {
+				let errors_send  = [];
+				for(let i = 0; i < err.errors.length; i++){
+					//console.log(err.errors[i].message)
+					errors_send.push({text:err.errors[i].message});
+				}
+				//console.log(errors_send)
+				res.render('usuario/add', {
+					route:"/usuario/agregar",
+					show:true,
+					errors_send,
+					nombre,
+					app,
+					apm,
+					no_cedula,
+					nickname,
+					password : "",
+					role,
+					tipo: kind
+				});
 			});
-		}else{
-			usuarioSchema.create({
-				nickname,
-				pass: password,
-				nombre,
-				app,
-				apm,
-				no_cedula,
-				id_tipo: role
+	},
+	getEditUser:  (req, res) => {
+		usuarioSchema.findByPk(req.params.id)
+			.then(user => {
+				//console.log(user)
+				res.render('usuario/add',{show:false,
+					route:"/usuario/editar/" + user.id,
+					nickname:user.nickname, nombre: user.nombre, app : user.app, apm : user.apm,
+					no_cedula : user.no_cedula, role: user.id_tipo
+				});
 			})
-				.then(usr => { res.redirect(getRouteWithTipo(role)); })
-				.catch(err => console.log(err))
-		}
+			.catch(err => console.log(err)); //modificacion en los params
 	},
 
-	getEditUser: (req, res) => {
-		usuarioSchema.findByPk(req.params.id).then(user => {
-			//console.log(user)
-			console.log(user.nickname)
-			//res.render('usuario/add',{user});
-		  })
+	editUser: (req, res) =>{
+		let {nombre, app, apm, no_cedula, nickname, role} = req.body;
+		usuarioSchema.findByPk(req.params.id)
+			.then(user => {
+				user.nombre = nombre;
+				user.app = app;
+				user.apm = apm;
+				user.no_cedula = no_cedula;
+				user.nickname = nickname;
+				user.save()
+					.then( user => {
+						res.redirect(getRouteWithTipo(role));
+					})
+					.catch(err =>{
+						let errors_send  = [];
+						for(let i = 0; i < err.errors.length; i++){errors_send.push({text:err.errors[i].message});}
+						res.render('usuario/add', {
+							route:"/usuario/editar/" + user.id,
+							show:false,
+							errors_send,
+							nombre,
+							app,
+							apm,
+							no_cedula,
+							nickname,
+							role
+						});
+					});
+			})
+			.catch(err => console.log(err));
 	},
 
 	deleteUser: (req, res) => {
@@ -87,7 +120,6 @@ module.exports = {
 		//const tipo = getRouteWithTipo(req.body['role']);
 		usuarioSchema.destroy({where:{id: parseInt(req.params.id)}})
 			.then(succ => res.send('Success'))
-			.catch(err => console.log(err)
-			);
+			.catch(err => console.log(err));
 	}
 }

@@ -7,7 +7,7 @@ const userSchema = sequelize_db.define('Usuario', {
 		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		nickname:  {type: Sequelize.STRING, allowNull: false, unique : true},
 		pass:      {type: Sequelize.STRING, allowNull: false},
-		nombre:    {type: Sequelize.STRING, allowNull: false},
+		nombre:    {type: Sequelize.STRING, allowNull: false, validate:{notEmpty: true}},
 		app:       {type: Sequelize.STRING, allowNull: false},
 		apm:       {type: Sequelize.STRING, allowNull: false},
 		no_cedula: {type: Sequelize.STRING, allowNull: false, unique: true},

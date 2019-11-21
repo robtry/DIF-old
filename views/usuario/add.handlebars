@@ -1,10 +1,12 @@
 <div class="container">
+	{{#if show}}
 	<div class="py-5 text-center">
 		<h2>Agregar {{tipo}}</h2>
 		<p class="lead">Llena todo los campos</p>
 	</div>
+	{{/if}}
 
-	{{#if errors.length}}
+	{{#if errors_send.length}}
 		<div class="page-section" id="overview">
 			<!-- ============================================================== -->
 			<!-- overview  -->
@@ -13,7 +15,7 @@
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 					<h2>Errores</h2>
 					<ul class="list-unstyled arrow">
-						{{#each errors}}
+						{{#each errors_send}}
 							<li>{{text}}</li>
 						{{/each}}
 					</ul>
@@ -27,7 +29,7 @@
 
 	<div class="container">
 		<h4 class="mb-3">Información Personal</h4>
-		<form action="/usuario/agregar" method="POST" class="needs-validation" novalidate>
+		<form action={{route}} method="POST" class="needs-validation" novalidate>
 			<div class="row">
 				<div class="col-md-4 mb-3">
 					<label for="nombre">Nombre(s)</label>
@@ -51,10 +53,12 @@
 					<label for="nickname">Nickname</label>
 					<input type="text" class="form-control" id="nickname" name= "nickname" placeholder="" value={{nickname}}>
 				</div>
+				{{#if show}}
 				<div class="col-md-4 mb-3">
 					<label for="password">Password</label>
 					<input type="password" class="form-control" id="password" name= "password" placeholder="" value={{password}}>
 				</div>
+				{{/if}}
 			</div>
 
 			 <input type="hidden" id="role" name="role" value={{role}}>
