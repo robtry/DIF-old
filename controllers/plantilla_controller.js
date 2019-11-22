@@ -78,28 +78,25 @@ module.exports = {
 	},
 
 	editPlantilla: (req, res) => {
-		console.log("--"),
-		console.log(req.body);
+		//console.log(req.body);
 		let {nombre,descripcion,role,tipo,//
 			campo,info_llenado,es_cerrada,es_cte,es_archivo,//
 			opciones,campo_pos} = req.body;
-		
+
 		descripcion = (descripcion == '') ? null : descripcion;
 		info_llenado = (info_llenado == '') ? null : info_llenado;
 		es_cerrada = (es_cerrada) ? true : false;
 		es_cte = (es_cte) ? true : false;
 		es_archivo = (es_archivo) ? true : false;
-		opciones = (opciones = '') ? null : opciones;
-		campo_pos = (campo_pos = '') ? null : campo_pos;
-
+		opciones = (opciones == '') ? null : opciones;
+		campo_pos = (campo_pos == '') ? null : campo_pos;
 
 		plantillaSchema.findByPk(req.params.id)
 			.then(p => {
-				plantillaSchema.create({
-					nombre,
-					descripcion,
-					id_tipo : p.id_tipo
-				})
+					p.nombre = nombre,
+					p.descripcion = descripcion,
+	
+					p.save()			
 					.then(pNew => {
 						//simepre se va a crear
 						campoSchema.create({
@@ -110,9 +107,35 @@ module.exports = {
 							es_consistente : es_cte,
 							es_archivo,
 							id_dato_consistente : campo_pos
-						}).then(newCamp =>{})
+						}).then(newCamp =>{
+							datoCteSchema.findAll()
+								.then(datos => {
+									res.render('plantilla/add', {
+										route: "/plantilla/editar/" + pNew.id, editing:true, accion:"Actualizar",
+										role : pNew.id_tipo, nombre : pNew.nombre, descripcion : pNew.descripcion,
+										campos : pNew.Campos, datos
+									});
+								})
+								.catch(err => console.log(err));
+						})
 						.catch(err => {
-
+							let errors_send  = [];
+							for(let i = 0; i < err.errors.length; i++){
+								errors_send.push({text:err.errors[i].message});
+							}
+							datoCteSchema.findAll()
+							.then(datos => {
+								res.render('plantilla/add', {
+									route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
+									role : p.id_tipo, nombre, descripcion,
+									campos : p.Campos, datos, errors_send,
+									campo, info_llenado, opciones,
+									es_cerrada_chk : (es_cerrada) ? "checked" : '',
+									es_cte_chk : (es_cte) ? "checked" : '',
+									es_archivo_chk : (es_archivo) ? "checked" : '',
+								});
+							})
+							.catch(err => console.log(err));
 						});
 					})
 					.catch(err => {
@@ -125,7 +148,11 @@ module.exports = {
 							res.render('plantilla/add', {
 								route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
 								role : p.id_tipo, nombre, descripcion,
-								campos : p.Campos, datos, errors_send
+								campos : p.Campos, datos, errors_send,
+								campo, info_llenado, opciones,
+								es_cerrada_chk : (es_cerrada) ? "checked" : '',
+								es_cte_chk : (es_cte) ? "checked" : '',
+								es_archivo_chk : (es_archivo) ? "checked" : '',
 							});
 						})
 						.catch(err => console.log(err));
