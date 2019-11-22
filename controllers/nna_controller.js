@@ -16,8 +16,43 @@ module.exports = {
 
 	//post
 	agregarNNA: (req, res) => {
+
 		//console.log(req.body)
 		let {nombre, app, apm, exp, sexo, fecha_nacimiento} = req.body;
+
+		nnaSchema.findByPk(exp).then( nna => {
+
+			let errors_send  = [];
+			errors_send.push({text: "Este expediente ya existe"});
+
+
+			if(usr){
+				res.render('usuario/add', {
+					route:"/usuario/agregar",
+					errors_send,
+					show:true,
+					nombre,
+					app,
+					apm,
+					exp,
+					sexo,
+					fecha_nacimiento,
+
+				});
+				return;
+			}
+			
+		});
+
+		nombre = ( nombre == '') ? null:nombre;
+		app = (app == '') ? null:app;
+		apm = (apm == '' ) ? null:apm;
+		exp = (exp == '') ? null:exp;
+		sexo = (sexo == '') ? null:sexo;
+		fecha_nacimiento = (fecha_nacimiento == '') ? null:fecha_nacimiento;
+
+
+
 		nnaSchema.create({
 			nombre,
 			app,

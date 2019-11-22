@@ -1,15 +1,8 @@
 const usuarioSchema = require('../models/usuario_model').User;
 
-function getTipo(role){
-	if(role == 2){return "Médico"}
-	else if(role == 3){return "Psicólogo"}
-	else if(role == 4){return "Abogado"}
-	else return ''
-}
+const getTipo = require('./active_controller').getTipo;
+const getRouteWithTipo = require('./active_controller').getRouteWithTipo;
 
-function getRouteWithTipo(role){
-	return '/usuarios/' + getTipo(role).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase() + 's';
-}
 
 
 module.exports = {
@@ -37,6 +30,39 @@ module.exports = {
 	//post
 	addUsuario:  (req, res) => {
 		let {nombre, app, apm, no_cedula, nickname, password, role, kind} = req.body;
+		usarioSchema.findOne({where: {no_cedula : no_cedula}}).then(usr => {
+
+			let errors_send  = [];
+			errors_send.push({text: "Este usuario ya existe"});
+
+
+			if(usr){
+				res.render('usuario/add', {
+					route:"/usuario/agregar",
+					errors_send,
+					show:true,
+					nombre,
+					app,
+					apm,
+					no_cedula,
+					nickname,
+					password : "",
+					role,
+					tipo: kind
+				});
+				return;
+			}
+
+	
+		});
+
+		nombre = (nombre == '') ? null:nombre;
+		app = (app == '') ? null:app;
+		apm = (apm == '') ? null:apm:
+		no_cedula = (no_cedual == '') ? null:no_cedula;
+		nickname = (nickname == '') ? null:nickname;
+		password = (password == '') ? null:password;
+
 		usuarioSchema.create({
 			nickname,
 			pass: password,
