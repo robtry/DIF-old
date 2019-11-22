@@ -60,12 +60,18 @@ denuncia_model.js
 * [ ] Add breadcumbs
 * [ ] Add edit option
 * [ ] Attatch files
-* [ ] Unique no_cedula on User and exp on NNA and pass null empty values
+* [x] Unique no_cedula on User and exp on NNA and pass null empty values
+* [ ] Custom message for unique pk
+* [ ] Search Bar
+* [ ] Views for NNA and User
+
 
 ## To Fix
 
 * [ ] Warnigns in html
 * [ ] Ajax delete
+* [ ] Correct display ocupation in NNA
+* [ ] Redirect edit and create to show
 
 ### In the near future
 

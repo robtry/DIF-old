@@ -27,7 +27,7 @@
 
 	<div class="container">
 		<h4 class="mb-3">Información Personal</h4>
-		<form action="/nna/agregar" method="POST" class="needs-validation" novalidate>
+		<form action="{{route}}" method="POST" class="needs-validation" autocomplete="off">
 			<div class="row">
 				<div class="col-md-4 mb-3">
 					<label for="nombre">Nombre(s)</label>
@@ -55,7 +55,7 @@
 				
 				<div class="col-md-4 mb-3">
 					<label for="sexo">Sexo</label>
-					<select class="custom-select d-block w-100" id="sexo" name="sexo" required>
+					<select class="custom-select d-block w-100" id="sexo" name="sexo">
 						{{#if sexo}}
 							<option value={{sexo}}>{{sexo}}</option>
 						{{else}}
@@ -68,7 +68,7 @@
 
 				<div class="col-md-4 mb-3">
 					<label for="fecha_nacimiento">Fecha Nacimiento</label>
-					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}} min="1994-01-31" max="2018-12-31">					
+					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}}>					
 				</div>
 			</div>
 
@@ -83,14 +83,9 @@
 				</div>
 				<div class="col-md-4 mb-3">
 					<label for="escolaridad">Escolaridad/Ocupación</label>
-					<select class="custom-select d-block w-100" id="escolaridad" name="escolaridad" required>
+					<select class="custom-select d-block w-100" id="escolaridad" name="escolaridad">
 						{{#if escolaridad}}
-							<option value={{sexo}}>{{sexo}}</option>
-							{{!--{{#if sexo == 'm'}}
-								<option value="f">f</option>
-							{{else}}
-								<option value="m">m</option>
-							{{/if}} --}}
+							<option value={{escolaridad}}>{{escolaridad_value}}</option>
 						{{else}}
 							<option value="">Seleccionar</option>
 						{{/if}}
@@ -101,6 +96,21 @@
 				</div>
 			</div>
 
+			<h4>Denuncia</h4>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="av_prev">Averiguación Previa</label>
+					<input type="text" class="form-control" id="av_prev" name="av_prev" placeholder="" value={{av_prev}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="act_seg">Acta de seguimiento</label>
+					<input type="text" class="form-control" id="act_seg" name="act_seg" placeholder="" value={{act_seg}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="fecha_denuncia">Fecha Denuncia</label>
+					<input type="date" class="form-control" id="fecha_denuncia" name="fecha_denuncia" value={{fecha_denuncia}}>					
+				</div>
+			</div>
 			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
 		</form>
 	</div>
