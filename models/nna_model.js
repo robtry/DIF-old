@@ -31,7 +31,6 @@ const nnaSchema = sequelize_db.define('NNA', {
         sexo: {type: Sequelize.CHAR, validate:{
             isIn: {args: ['m','f'], msg: "Ingrese un sexo válido"}
         }},
-        ocupacion: {type: Sequelize.STRING},
         peso:  {type: Sequelize.FLOAT, validate:{
             isFloat: { msg: "Ingrese un peso válido"},
             min: { args: [1], msg: "Peso inválido"}

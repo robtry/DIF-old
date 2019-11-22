@@ -47,7 +47,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col-md-6 mb-3">
+				<div class="col-md-3 mb-3">
 					<label for="exp">Expediente</label>
 					<input type="text" class="form-control" id="exp" name= "exp" placeholder="" value={{exp}}>
 					<p>*Obligatorio</p>
@@ -56,14 +56,48 @@
 				<div class="col-md-4 mb-3">
 					<label for="sexo">Sexo</label>
 					<select class="custom-select d-block w-100" id="sexo" name="sexo" required>
-					<option value="">Selecciona...</option>
-					<option value="m">Másculino</option>
-					<option value="f">Femenino</option>
+						{{#if sexo}}
+							<option value={{sexo}}>{{sexo}}</option>
+						{{else}}
+							<option value="">Seleccionar</option>
+						{{/if}}
+						<option value="m">m</option>
+						<option value="f">f</option>
 					</select>
 				</div>
+
 				<div class="col-md-4 mb-3">
 					<label for="fecha_nacimiento">Fecha Nacimiento</label>
 					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}} min="1994-01-31" max="2018-12-31">					
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3 mb-3">
+					<label for="peso">Peso</label>
+					<input type="text" class="form-control" id="peso" name= "peso" placeholder="" value={{peso}}>
+				</div>
+				<div class="col-md-3 mb-3">
+					<label for="talla">Talla</label>
+					<input type="text" class="form-control" id="talla" name= "talla" placeholder="" value={{talla}}>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="escolaridad">Escolaridad/Ocupación</label>
+					<select class="custom-select d-block w-100" id="escolaridad" name="escolaridad" required>
+						{{#if escolaridad}}
+							<option value={{sexo}}>{{sexo}}</option>
+							{{!--{{#if sexo == 'm'}}
+								<option value="f">f</option>
+							{{else}}
+								<option value="m">m</option>
+							{{/if}} --}}
+						{{else}}
+							<option value="">Seleccionar</option>
+						{{/if}}
+						{{#each esc}}
+							<option value={{id}}>{{nivel}}</option>
+						{{/each}}
+					</select>
 				</div>
 			</div>
 

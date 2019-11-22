@@ -8,8 +8,8 @@ router.get('/nnas', nnaController.getNNAs);
 router.get('/nna/agregar', nnaController.getAgregarNNA);
 router.post('/nna/agregar', nnaController.agregarNNA);
 //editar
-router.get('nna/editar/:exp')
-router.post('nna/editar/:exp')
+router.get('/nna/editar/:exp', nnaController.getEditNNA)
+router.post('/nna/editar/:exp', nnaController.editNNA);
 
 
 
