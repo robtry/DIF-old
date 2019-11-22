@@ -1,0 +1,115 @@
+<div class="container">
+	{{#if show}}
+	<div class="py-5 text-center">
+		<h2>Agregar {{tipo}}</h2>
+		<p class="lead">Llena todo los campos</p>
+	</div>
+	{{/if}}
+
+	{{#if errors_send.length}}
+		<div class="page-section" id="overview">
+			<!-- ============================================================== -->
+			<!-- overview  -->
+			<!-- ============================================================== -->
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+					<h2>Errores</h2>
+					<ul class="list-unstyled arrow">
+						{{#each errors_send}}
+							<li>{{text}}</li>
+						{{/each}}
+					</ul>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- end overview  -->
+			<!-- ============================================================== -->
+		</div>
+	{{/if}}
+
+	<div class="container">
+		<h4 class="mb-3">Información sobre la plantilla</h4>
+		<form action={{route}} method="POST" class="needs-validation" autocomplete="off">
+			<div class="row">
+				<div class="col-md-10 mb-10">
+					<label for="nombre">Nombre(s)</label>
+					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+				</div>
+				<div class="col-md-10 mb-10">
+					<label for="descripcion">Descripción</label>
+                    <textarea class="form-control" id="descripcion" rows="3" name="descripcion">{{descripcion}}</textarea>
+				</div>
+			</div>
+
+			 <input type="hidden" id="role" name="role" value={{role}}>
+			 <input type="hidden" id="tipo" name="tipo" value={{tipo}}>
+			{{#if editing}}
+				<br>
+				<h4>Campos</h4>
+				{{#each campos}}
+					<p>{{pregunta}}</p>
+				{{else}}
+					<p>No se han agregado</p>
+				{{/each}}
+				<h4>Agregar Campos</h4>
+				<div class="row">
+					<div class="col-md-6 mb-6">
+						<label for="campo">Campo</label>
+						<input type="text" class="form-control" id="campo" name="campo" placeholder="" value={{campo}}>
+					</div>
+					<div class="col-md-6 mb-6">
+						<label for="info_llenado">Información de llenado</label>
+						<textarea class="form-control" id="info_llenado" rows="3" name="info_llenado">{{info_llenado}}</textarea>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 mb-12">
+						<label class="custom-control custom-checkbox custom-control-inline">
+							<input type="checkbox" class="custom-control-input" name="es_cerrada" {{es_cerrada_chk}}><span class="custom-control-label">Cerrada</span>
+						</label>
+						<label class="custom-control custom-checkbox custom-control-inline">
+							<input type="checkbox" class="custom-control-input" name="es_cte" {{es_cte_chk}}><span class="custom-control-label">Constante</span>
+						</label>
+						<label class="custom-control custom-checkbox custom-control-inline">
+							<input type="checkbox" class="custom-control-input" name="es_archivo" {{es_archivo_chk}}><span class="custom-control-label">Archivo</span>
+						</label>
+					</div>
+				</div>
+				<div id="campo_op">
+					<br>
+					<h4>Opciones</h4>
+					<div class="row">
+						<div class="col-md-8 mb-8">
+							<label for="opciones">Posibles valores</label>
+							<textarea class="form-control" id="opciones" rows="3" name="opciones">{{opciones}}</textarea>
+							<p><i>SEPARADOS POR '';'</i></p>
+						</div>
+					</div>
+				</div>
+				<div id="dato_cte">
+					<br>
+					<h4>Recuperar</h4>
+					<div class="row">
+						<div class="col-md-4 mb-3">
+							<label for="campo_pos">INFO PRELLENADO</label>
+							<select class="custom-select d-block w-100" id="campo_pos" name="campo_pos">
+								{{#if campo_pos}}
+									<option value={{campo_pos}}>{{campo_pos_value}}</option>
+								{{else}}
+									<option value="">Seleccionar</option>
+								{{/if}}
+								{{#each datos}}
+									<option value={{id}}>{{dato}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+			{{else}}
+				<p><i>Nota: Después de crear la plantilla podrás agregar campos</i></p>
+			{{/if}}
+			<br>
+			<button class="btn btn-primary btn-lg" type="submit">{{accion}}</button>
+		</form>
+	</div>
+</div>

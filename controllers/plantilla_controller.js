@@ -1,14 +1,15 @@
 const plantillaSchema =  require('../models/plantilla_model').plantilla;
 const campoSchema =  require('../models/plantilla_model').campo;
+const datoCteSchema = require('../models/plantilla_model').datoConst;
+/*
 const opcionSchema =  require('../models/opcion_model').opcion;
 const formatoSchema =  require('../models/formato_model').formato;
 const respuestaSchema =  require('../models/respuesta_model').respuesta;
 const resopSchema =  require('../models/resop_model').resop;
+*/
 
 const getTipo = require('./active_controller').getTipo;
-const getRouteWithTipo = require('./active_controller').getRouteWithTipo;
-
-
+const getAddPlantillaRoute = require('./active_controller').getAddPlantillaRoute;
 
 
 module.exports = {
@@ -20,9 +21,116 @@ module.exports = {
 				.then(plantilla => {
 					//console.log(usr)
 					const tipo = getTipo(role);
-					res.render('plantillas/plantillas', {usr, tipo, role})
+					const add_route =  getAddPlantillaRoute(role);
+					res.render('plantilla/plantillas', {plantilla, tipo, role, add_route})
 				})
 				.catch(err => console.log(err));
 		}
+	},
+
+	getAddPlantilla: (role) => {
+		const tipo = getTipo(role);
+		return (req, res) => {
+			res.render('plantilla/add', {tipo, role, route: "/plantilla/agregar", editing:false, accion:"Crear"});
+		}
+	},
+
+	addPlantilla:  (req, res) => {
+		let {nombre, descripcion, role, tipo} = req.body;
+		descripcion = (descripcion == '') ? null : descripcion;
+		//console.log(descripcion)
+		plantillaSchema.create({
+			id_tipo : role,
+			nombre,
+			descripcion
+		})
+			.then(p => {
+				res.redirect(getAddPlantillaRoute(role))
+			})
+			.catch(err => {
+				let errors_send  = [];
+				for(let i = 0; i < err.errors.length; i++){
+					errors_send.push({text:err.errors[i].message});
+				}
+				res.render('plantilla/add', {
+					tipo, role, route: "/plantilla/agregar",
+					errors_send, nombre, descripcion,
+					editing:false, accion:"Crear"
+				});
+			});
+	},
+
+	getEditPlantilla: (req, res) => {
+		plantillaSchema.findByPk(req.params.id, {include: [ campoSchema ]})
+			.then(p => {
+				//console.log(p)
+				datoCteSchema.findAll()
+					.then(datos => {
+						res.render('plantilla/add', {
+							route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
+							role : p.id_tipo, nombre : p.nombre, descripcion : p.descripcion,
+							campos : p.Campos, datos
+						});
+					})
+					.catch(err => console.log(err));
+			})
+			.catch(err => console.log(err))
+	},
+
+	editPlantilla: (req, res) => {
+		console.log("--"),
+		console.log(req.body);
+		let {nombre,descripcion,role,tipo,//
+			campo,info_llenado,es_cerrada,es_cte,es_archivo,//
+			opciones,campo_pos} = req.body;
+		
+		descripcion = (descripcion == '') ? null : descripcion;
+		info_llenado = (info_llenado == '') ? null : info_llenado;
+		es_cerrada = (es_cerrada) ? true : false;
+		es_cte = (es_cte) ? true : false;
+		es_archivo = (es_archivo) ? true : false;
+		opciones = (opciones = '') ? null : opciones;
+		campo_pos = (campo_pos = '') ? null : campo_pos;
+
+
+		plantillaSchema.findByPk(req.params.id)
+			.then(p => {
+				plantillaSchema.create({
+					nombre,
+					descripcion,
+					id_tipo : p.id_tipo
+				})
+					.then(pNew => {
+						//simepre se va a crear
+						campoSchema.create({
+							id_plantilla : pNew.id,
+							pregunta : campo,
+							info_llenado,
+							es_cerrada,
+							es_consistente : es_cte,
+							es_archivo,
+							id_dato_consistente : campo_pos
+						}).then(newCamp =>{})
+						.catch(err => {
+
+						});
+					})
+					.catch(err => {
+						let errors_send  = [];
+						for(let i = 0; i < err.errors.length; i++){
+							errors_send.push({text:err.errors[i].message});
+						}
+						datoCteSchema.findAll()
+						.then(datos => {
+							res.render('plantilla/add', {
+								route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
+								role : p.id_tipo, nombre, descripcion,
+								campos : p.Campos, datos, errors_send
+							});
+						})
+						.catch(err => console.log(err));
+					});
+			})
+			.catch(err => console.log(err));
 	},
 }

@@ -27,17 +27,17 @@ const plantillaSchema = sequelize_db.define('Plantilla',{
 				key : 'id'
 			}
 		},
-		nombre:      {type: Sequelize.STRING, allowNull: false, validate:{
-            len: { args: [[2,20]], msg: "El nombre esta fuera de los rangos permitidos [2,20]" }, 
+		nombre: {type: Sequelize.STRING, allowNull: false, validate:{
+            len: { args: [2,40], msg: "El nombre esta fuera de los rangos permitidos [2,40]" }, 
             notEmpty: { msg:"El campo nombre no puede estar vacio"}, 
-            isAlpha: {msg: "Solo se aceptan letras en el nombre"} 
+            isAlphanumeric: {msg: "Sólo se aceptan letras y números en el nombre"} 
         }},
 		descripcion: {type: Sequelize.STRING}
 		//created at and updated at alerady defined by Sequelize
 	},{
 		freezeTableName: true, 
-		underscored: true, //not use camel case
-		//timestamp true
+		underscored: true,//not use camel case
+		timestamp: true
 	}
 );
 
@@ -54,17 +54,17 @@ const campoSchema = sequelize_db.define('Campo', {
 		pregunta:       {type: Sequelize.STRING, allowNull: false, validate:{
 			notEmpty: { msg:"El campo pregunta no puede estar vacio"}
 		}},
-		info_llenado:   {type: Sequelize.STRING, allowNull: false, validate:{
+		info_llenado:   {type: Sequelize.STRING, validate:{
 			notEmpty: { msg:"El campo info_llenado no puede estar vacio"}
 		}},
 		es_cerrada:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
-			isIn: { args: [[true, false]], masg: "Elija una opción valida"}
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		es_consistente: {type: Sequelize.BOOLEAN, allowNull: false, validate:{
-			isIn: { args: [[true, false]], masg: "Elija una opción valida"}
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		es_archivo:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
-			isIn: { args: [[true, false]], masg: "Elija una opción valida"}
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		id_dato_consistente: {
 			type: Sequelize.INTEGER,
@@ -78,6 +78,15 @@ const campoSchema = sequelize_db.define('Campo', {
 		freezeTableName: true,
 		underscored: true,
 		timestamps: false,
+		validate : {
+			oneOrAnyone(){//esta  no esta ista
+				if(
+					!( (this.es_cerrada !== null) && (this.es_consistente !== null)  && (this.es_archivo !== null) ) 
+				){
+					throw new Error('Deben completarse todos los campos de la Denuncia')
+				}
+			}
+		}
 	}
 );
 
@@ -177,6 +186,9 @@ const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 		timestamps: false,
 	}
 );
+
+campoSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
+plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id'});
 
 module.exports = {
 	plantilla : plantillaSchema,

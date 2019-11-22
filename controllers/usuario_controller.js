@@ -1,7 +1,7 @@
 const usuarioSchema = require('../models/usuario_model').User;
 
 const getTipo = require('./active_controller').getTipo;
-const getRouteWithTipo = require('./active_controller').getRouteWithTipo;
+const getUserRoute = require('./active_controller').getUserRoute;
 
 
 
@@ -30,7 +30,7 @@ module.exports = {
 	//post
 	addUsuario:  (req, res) => {
 		let {nombre, app, apm, no_cedula, nickname, password, role, kind} = req.body;
-		usarioSchema.findOne({where: {no_cedula : no_cedula}}).then(usr => {
+		/*usarioSchema.findOne({where: {no_cedula : no_cedula}}).then(usr => {
 
 			let errors_send  = [];
 			errors_send.push({text: "Este usuario ya existe"});
@@ -54,7 +54,7 @@ module.exports = {
 			}
 
 	
-		});
+		});*/
 
 		nombre = (nombre == '') ? null:nombre;
 		app = (app == '') ? null:app;
@@ -72,7 +72,7 @@ module.exports = {
 			no_cedula,
 			id_tipo: role
 		})
-			.then(usr => { res.redirect(getRouteWithTipo(role)); })
+			.then(usr => { res.redirect(getUserRoute(role)); })
 			.catch(err => {
 				let errors_send  = [];
 				for(let i = 0; i < err.errors.length; i++){
@@ -119,7 +119,7 @@ module.exports = {
 				user.nickname = nickname;
 				user.save()
 					.then( user => {
-						res.redirect(getRouteWithTipo(role));
+						res.redirect(getUserRoute(role));
 					})
 					.catch(err =>{
 						let errors_send  = [];
@@ -143,7 +143,7 @@ module.exports = {
 	deleteUser: (req, res) => {
 		console.log(req.params.id);
 		//console.log(req.body['role']);
-		//const tipo = getRouteWithTipo(req.body['role']);
+		//const tipo = getUserRoute(req.body['role']);
 		usuarioSchema.destroy({where:{id: parseInt(req.params.id)}})
 			.then(succ => res.send('Success'))
 			.catch(err => console.log(err));

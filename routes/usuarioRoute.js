@@ -14,7 +14,6 @@ router.get('/abogado/agregar', userController.getAddUsuario(4));
 router.post('/usuario/agregar', userController.addUsuario);
 //editar
 router.get('/usuario/editar/:id', userController.getEditUser);
-//post editar
 router.post('/usuario/editar/:id', userController.editUser);
 //delete
 router.delete('/usuario/:id', userController.deleteUser);
