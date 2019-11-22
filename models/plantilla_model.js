@@ -81,11 +81,27 @@ const campoSchema = sequelize_db.define('Campo', {
 		validate : {
 			oneOrAnyone(){//esta  no esta ista
 				if(
-					!( (this.es_cerrada !== null) && (this.es_consistente !== null)  && (this.es_archivo !== null) ) 
-				){
+					( (this.es_cerrada) && ((this.es_consistente)  || (this.es_archivo)) ) 
+				)if(
+					((this.es_cosistente) && (!(this.es_cerrada) || !(this.es_archivo == null)))
+				)if(
+					((this.es_archivo) && ((this.es_cerrada ) || (this.es_consistente)))
+				)if(
+					!((this.es_archivo) && (this.es_cerrada) && (this.es_consistente))
+				)
+				{
 					throw new Error('Deben completarse todos los campos de la Denuncia')
 				}
+			},
+			validateDatoConstante(){
+				if(
+					((this.es_consistente) && (this.id_dato_consistente == null))
+
+				)
+					throw new Error('Se debe elegir un dato consistente')
+			
 			}
+
 		}
 	}
 );
