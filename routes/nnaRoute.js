@@ -10,6 +10,8 @@ router.post('/nna/agregar', nnaController.agregarNNA);
 //editar
 router.get('/nna/editar/:exp', nnaController.getEditNNA)
 router.post('/nna/editar/:exp', nnaController.editNNA);
+//Mostrar
+router.get('/nna/:exp', nnaController.getNNA);
 
 
 

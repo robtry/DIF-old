@@ -202,6 +202,16 @@ const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 campoSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
 plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id'});
 
+formatSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
+plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'id'});
+
+nnaSchema.hasMany(formatSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
+formatSchema.belongsTo(nnaSchema, {foreignKey: 'id_nna', targetKey: 'exp'});
+
+
+
+
+
 module.exports = {
 	plantilla : plantillaSchema,
 	campo : campoSchema,

@@ -1,0 +1,99 @@
+<div class="container">
+	<div class="py-5 text-center">
+		<h2>Ver NNA</h2>
+		<p class="lead">Solo consulta</p>
+	</div>
+
+	{{#if errors_send.length}}
+	<div class="page-section" id="overview">
+		<!-- ============================================================== -->
+		<!-- overview  -->
+		<!-- ============================================================== -->
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h2>Errores</h2>
+				<ul class="list-unstyled arrow">
+					{{#each errors_send}}
+						<li>{{text}}</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<!-- ============================================================== -->
+		<!-- end overview  -->
+		<!-- ============================================================== -->
+	</div>
+	{{/if}}
+
+	<div class="container">
+		<h4 class="mb-3">Información Personal</h4>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="nombre">Nombre</label>
+					<h5>{{nombre}}</h5>
+					
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="app">Apellido Paterno</label>
+					<h5>{{Apellido}}</h5>
+					
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="apm">Apellido Materno</label>
+					<h5>{{apm}}</h5>
+					
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3 mb-3">
+					<label for="exp">Expediente</label>
+					<h5>{{exp}}</h5>
+					
+				</div>
+				
+				<div class="col-md-4 mb-3">
+					<label for="sexo">Sexo</label>
+					<h5>{{Sexo}}</h5>
+				</div>
+
+				<div class="col-md-4 mb-3">
+					<label for="fecha_nacimiento">Fecha Nacimiento</label>
+					<h5>{{fecha_nacimiento}}</h5>	
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3 mb-3">
+					<label for="peso">Peso</label>
+					<h5>{{peso}}</h5>
+				</div>
+				<div class="col-md-3 mb-3">
+					<label for="talla">Talla</label>
+					<h5>{{talla}}</h5>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="escolaridad">Escolaridad/Ocupación</label>
+					<h5>{{escolaridad}}</h5>
+				</div>
+			</div>
+
+			<h4>Denuncia</h4>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="av_prev">Averiguación Previa</label>
+					<h5>{{av_prev}}</h5>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="act_seg">Acta de seguimiento</label>
+					<h5>{{act_seg}}</h5>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="fecha_denuncia">Fecha Denuncia</label>
+					<h5>{{fecha_denuncia}}</h5>		
+				</div>
+			</div>
+			
+		
+	</div>
+</div>

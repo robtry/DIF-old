@@ -4,6 +4,29 @@ const denunciaSchema = require('../models/denuncia_model').denuncia;
 
 module.exports = {
 
+
+	getNNA: (req, res) => {
+		//console.log(req.params.exp)
+		nnaSchema.findByPk(req.params.exp, {include: [ denunciaSchema, ]})
+			.then(nna => {
+				//console.log(nna)
+				//console.log(nna.Denuncia[0].averiguacion_previa)
+				//console.log(nna.Denuncia)
+				escolariadSchema.findAll()
+				.then(esc => {
+					res.render('nna/show',{
+						nombre: nna.nombre, app : nna.app, apm : nna.apm,
+						exp : nna.exp, sexo : nna.sexo, fecha_nacimiento : nna.fecha_nacimiento,
+						peso : nna.peso, talla : nna.talla, esc, route:"/nna/editar/"+nna.exp,
+						av_prev : (nna.Denuncia.length > 0) ? nna.Denuncia[0].averiguacion_previa : '',
+						act_seg : (nna.Denuncia.length > 0) ? nna.Denuncia[0].seguimiento_acta : '',
+						fecha_denuncia : (nna.Denuncia.length > 0) ? nna.Denuncia[0].fecha_denuncia : ''
+					});
+				})
+			})
+			.catch(err => console.log(err));
+	},
+
 	getNNAs : (req, res) => {
 		nnaSchema.findAll({order: [
             ['created_at', 'DESC'],
