@@ -1,0 +1,73 @@
+<div class="container">
+	<div class="py-5 text-center">
+		<h2>Agregar NNA</h2>
+		<p class="lead">Llena todo los campos</p>
+	</div>
+
+	{{#if errors_send.length}}
+	<div class="page-section" id="overview">
+		<!-- ============================================================== -->
+		<!-- overview  -->
+		<!-- ============================================================== -->
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h2>Errores</h2>
+				<ul class="list-unstyled arrow">
+					{{#each errors_send}}
+						<li>{{text}}</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<!-- ============================================================== -->
+		<!-- end overview  -->
+		<!-- ============================================================== -->
+	</div>
+	{{/if}}
+
+	<div class="container">
+		<h4 class="mb-3">Información Personal</h4>
+		<form action="/nna/agregar" method="POST" class="needs-validation" novalidate>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="nombre">Nombre(s)</label>
+					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+					<p>*Obligatorio</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="app">Apellido Paterno</label>
+					<input type="text" class="form-control" id="app" name="app" placeholder="" value={{app}}>
+					<p>*Obligatorio</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="apm">Apellido Materno</label>
+					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value={{apm}}>
+					<p>*Obligatorio</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="exp">Expediente</label>
+					<input type="text" class="form-control" id="exp" name= "exp" placeholder="" value={{exp}}>
+					<p>*Obligatorio</p>
+				</div>
+				
+				<div class="col-md-4 mb-3">
+					<label for="sexo">Sexo</label>
+					<select class="custom-select d-block w-100" id="sexo" name="sexo" required>
+					<option value="">Selecciona...</option>
+					<option value="m">Másculino</option>
+					<option value="f">Femenino</option>
+					</select>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="fecha_nacimiento">Fecha Nacimiento</label>
+					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}} min="1994-01-31" max="2018-12-31">					
+				</div>
+			</div>
+
+			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+		</form>
+	</div>
+</div>
