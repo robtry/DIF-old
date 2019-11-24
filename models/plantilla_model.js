@@ -30,7 +30,7 @@ const plantillaSchema = sequelize_db.define('Plantilla',{
 		nombre: {type: Sequelize.STRING, allowNull: false, validate:{
             len: { args: [2,40], msg: "El nombre esta fuera de los rangos permitidos [2,40]" }, 
             notEmpty: { msg:"El campo nombre no puede estar vacio"}, 
-            isAlphanumeric: {msg: "Sólo se aceptan letras y números en el nombre"} 
+            //isAlphanumeric: {msg: "Sólo se aceptan letras y números en el nombre"} 
         }},
 		descripcion: {type: Sequelize.STRING}
 		//created at and updated at alerady defined by Sequelize
@@ -52,7 +52,7 @@ const campoSchema = sequelize_db.define('Campo', {
 			}
 		},
 		pregunta:       {type: Sequelize.STRING, allowNull: false, validate:{
-			notEmpty: { msg:"El campo pregunta no puede estar vacio"}
+			notEmpty: { msg:"El campo dato no puede estar vacio"}
 		}},
 		info_llenado:   {type: Sequelize.STRING, validate:{
 			notEmpty: { msg:"El campo info_llenado no puede estar vacio"}
@@ -64,6 +64,9 @@ const campoSchema = sequelize_db.define('Campo', {
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		es_archivo:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		envio_opciones: {type: Sequelize.BOOLEAN, validate:{
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		id_dato_consistente: {
@@ -81,23 +84,25 @@ const campoSchema = sequelize_db.define('Campo', {
 		validate : {
 			oneOrAnyone(){//esta  no esta ista
 				if(
-					/*(this.es_cerrada && this.es_consistente && this.es_archivo) ||
-					(this.es_cerrada==true && (this.)) ||
-					() ||
-					()*/false
+					(this.es_cerrada && this.es_consistente && this.es_archivo) ||
+					(this.es_cerrada && (this.es_consistente || this.es_archivo)) ||
+					(this.es_consistente && (this.es_cerrada || this.es_archivo)) ||
+					(this.es_archivo && (this.es_cerrada || this.es_consistente))
 				){
 					throw new Error('Sólo de puede marcar una casilla o niguna')
 				}
 			},
 			validateDatoConstante(){
-				if(
-					((this.es_consistente) && (this.id_dato_consistente == null))
-
-				)
-					throw new Error('Se debe elegir un dato consistente')
+				if((this.es_consistente) && (this.id_dato_consistente == null)){
+					throw new Error('Si el campo va a ser constante se debe elegir de donde recuperar la información')
+				}
 			
+			},
+			validateCerrada(){
+				if(this.es_cerrada && (!this.envio_opciones)){
+					throw new Error('Si el campo es cerrado se deben mandar opciones en el formato correcto')
+				}
 			}
-
 		}
 	}
 );
@@ -208,9 +213,8 @@ plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'i
 nnaSchema.hasMany(formatSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
 formatSchema.belongsTo(nnaSchema, {foreignKey: 'id_nna', targetKey: 'exp'});
 
-
-
-
+opcionSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+campoSchema.hasMany(opcionSchema,  {foreignKey: 'id_campo', sourceKey: 'id'});
 
 module.exports = {
 	plantilla : plantillaSchema,

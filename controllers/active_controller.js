@@ -1,17 +1,29 @@
 module.exports ={
 
+    /* Errors */
+    getErrorMessages : (err) => {
+        //console.log(err);
+        let errors_send  = [];
+        for(let i = 0; i < err.errors.length; i++){
+            errors_send.push({text:err.errors[i].message});
+        }
+        return errors_send;
+    },
+
+    /* User */
     getTipo:(role) =>{
         if(role == 1){return "Trabajo Social"}
-        else if(role == 2){return "Médico"}
-        else if(role == 3){return "Psicólogo"}
-        else if(role == 4){return "Abogado"}
-        else return ''
+        if(role == 2){return "Médico"}
+        if(role == 3){return "Psicólogo"}
+        if(role == 4){return "Abogado"}
+        return ''
     },
     
-    getUserRoute:(role) =>{
+    getUserRoute:(role, getTipo) =>{
         return '/usuarios/' + getTipo(role).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase() + 's';
     },
 
+    /* Plantilla */
     getAddPlantillaRoute:(role) => {
         aux = ''
         if(role == 1){aux = "tsocial"}

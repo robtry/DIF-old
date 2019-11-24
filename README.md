@@ -64,6 +64,7 @@ denuncia_model.js
 * [ ] Custom message for unique pk
 * [ ] Search Bar
 * [ ] Views for NNA and User
+* [ ] Scopes (trims)
 
 
 ## To Fix
@@ -76,4 +77,3 @@ denuncia_model.js
 ### In the near future
 
 * [ ] Implement sequelize migration 
-* [ ] Scopes

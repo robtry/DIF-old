@@ -1,8 +1,8 @@
 const plantillaSchema =  require('../models/plantilla_model').plantilla;
 const campoSchema =  require('../models/plantilla_model').campo;
 const datoCteSchema = require('../models/plantilla_model').datoConst;
+const opcionSchema =  require('../models/plantilla_model').opcion;
 /*
-const opcionSchema =  require('../models/opcion_model').opcion;
 const formatoSchema =  require('../models/formato_model').formato;
 const respuestaSchema =  require('../models/respuesta_model').respuesta;
 const resopSchema =  require('../models/resop_model').resop;
@@ -64,6 +64,10 @@ module.exports = {
 		plantillaSchema.findByPk(req.params.id, {include: [ campoSchema ]})
 			.then(p => {
 				//console.log(p)
+				p.Campos.forEach(el => {
+					console.log(el)
+				})
+				//opcionSchema.findAll({})
 				datoCteSchema.findAll()
 					.then(datos => {
 						res.render('plantilla/add', {
@@ -91,7 +95,7 @@ module.exports = {
 		opciones = (opciones == '') ? null : opciones;
 		campo_pos = (campo_pos == '') ? null : campo_pos;
 
-		plantillaSchema.findByPk(req.params.id)
+		plantillaSchema.findByPk(req.params.id, {include: [ campoSchema ]})
 			.then(p => {
 					p.nombre = nombre,
 					p.descripcion = descripcion,
@@ -99,6 +103,7 @@ module.exports = {
 					p.save()			
 					.then(pNew => {
 						//simepre se va a crear
+						let envio_op = (opciones) ? opciones.split(";").length > 1 : false;
 						campoSchema.create({
 							id_plantilla : pNew.id,
 							pregunta : campo,
@@ -106,19 +111,29 @@ module.exports = {
 							es_cerrada,
 							es_consistente : es_cte,
 							es_archivo,
-							id_dato_consistente : campo_pos
-						}).then(newCamp =>{
-							datoCteSchema.findAll()
-								.then(datos => {
-									res.render('plantilla/add', {
-										route: "/plantilla/editar/" + pNew.id, editing:true, accion:"Actualizar",
-										role : pNew.id_tipo, nombre : pNew.nombre, descripcion : pNew.descripcion,
-										campos : pNew.Campos, datos
-									});
-								})
-								.catch(err => console.log(err));
+							id_dato_consistente : campo_pos,
+							envio_opciones : envio_op
 						})
-						.catch(err => {
+							.then(newCamp =>{
+								//si tenia opciones válido
+								if(envio_op){
+									opciones = opciones.split(";")
+									//console.log(opciones)
+									for(let i = 0; i < opciones.length; i++){
+										if(opciones[i].length > 0){
+											opcionSchema.create({
+												id_campo : newCamp.id,
+												opcion : opciones[i],
+											})
+											.then(op => {})
+											.catch(err => {console.log(err)})
+										}
+									}
+								}
+								res.redirect("/plantilla/editar/" + pNew.id)
+						})
+						.catch(err => { //de craear un nuevo campo
+							//console.log(p)
 							let errors_send  = [];
 							for(let i = 0; i < err.errors.length; i++){
 								errors_send.push({text:err.errors[i].message});
@@ -138,7 +153,7 @@ module.exports = {
 							.catch(err => console.log(err));
 						});
 					})
-					.catch(err => {
+					.catch(err => { //de update a la plantilla
 						let errors_send  = [];
 						for(let i = 0; i < err.errors.length; i++){
 							errors_send.push({text:err.errors[i].message});

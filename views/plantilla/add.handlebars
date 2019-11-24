@@ -47,14 +47,16 @@
 				<br>
 				<h4>Campos</h4>
 				{{#each campos}}
-					<p>{{pregunta}}</p>
+					<p> <b>Pregunta:</b> {{pregunta}}</p>
+					<p> <b>Información de llenado:</b> {{info_llenado}}</p>
+
 				{{else}}
 					<p>No se han agregado</p>
 				{{/each}}
 				<h4>Agregar Campos</h4>
 				<div class="row">
 					<div class="col-md-6 mb-6">
-						<label for="campo">Campo</label>
+						<label for="campo">Dato</label>
 						<input type="text" class="form-control" id="campo" name="campo" placeholder="" value={{campo}}>
 					</div>
 					<div class="col-md-6 mb-6">

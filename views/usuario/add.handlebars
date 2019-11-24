@@ -1,9 +1,9 @@
 <div class="container">
 	{{#if show}}
-	<div class="py-5 text-center">
-		<h2>Agregar {{tipo}}</h2>
-		<p class="lead">Llena todo los campos</p>
-	</div>
+		<div class="py-5 text-center">
+			<h2>Agregar {{tipo}}</h2>
+			<p class="lead">Llena todo los campos</p>
+		</div>
 	{{/if}}
 
 	{{#if errors_send.length}}
@@ -33,15 +33,15 @@
 			<div class="row">
 				<div class="col-md-4 mb-3">
 					<label for="nombre">Nombre(s)</label>
-					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value="{{nombre}}">
 				</div>
 				<div class="col-md-4 mb-3">
 					<label for="app">Apellido Paterno</label>
-					<input type="text" class="form-control" id="app" name="app" placeholder="" value={{app}}>
+					<input type="text" class="form-control" id="app" name="app" placeholder="" value="{{app}}">
 				</div>
 				<div class="col-md-4 mb-3">
 					<label for="apm">Apellido Materno</label>
-					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value={{apm}}>
+					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value="{{apm}}">
 				</div>
 			</div>
 			<div class="row">
@@ -64,7 +64,7 @@
 			 <input type="hidden" id="role" name="role" value={{role}}>
 			 <input type="hidden" id="kind" name="kind" value={{tipo}}>
 
-			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+			<button class="btn btn-primary btn-lg" type="submit">{{btn_info}}</button>
 		</form>
 	</div>
 </div>

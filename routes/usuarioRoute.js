@@ -10,11 +10,13 @@ router.get('/usuarios/abogados', userController.getUsuarios(4));
 router.get('/medico/agregar', userController.getAddUsuario(2));
 router.get('/psicologo/agregar', userController.getAddUsuario(3));
 router.get('/abogado/agregar', userController.getAddUsuario(4));
-//post agregar
 router.post('/usuario/agregar', userController.addUsuario);
 //editar
 router.get('/usuario/editar/:id', userController.getEditUser);
 router.post('/usuario/editar/:id', userController.editUser);
 //delete
 router.delete('/usuario/:id', userController.deleteUser);
+//show
+router.get('/usuario/detalles/:id', userController.getUsuario)
+
 module.exports = router;
