@@ -83,12 +83,16 @@
 												<td>
 													{{#if es_abierta}}
 														{{#if dato_int}}
-															int
+															Int
 														{{else}}{{#if dato_string}}
-															char(255)
+															Char(255)
+														{{else}}{{#if dato_txt}}
+															Texto
+														{{else}}{{#if dato_fecha}}
+															Fecha
 														{{else}}
-															texto
-														{{/if}}{{/if}}
+															Hora
+														{{/if}}{{/if}}{{/if}}{{/if}}
 													{{else}}
 														x
 													{{/if}}
@@ -187,6 +191,12 @@
 							</label>
 							<label class="custom-control custom-radio custom-control-inline">
 								<input type="radio" name="data_type" value="txt" class="custom-control-input"><span class="custom-control-label">Text</span>
+							</label>
+							<label class="custom-control custom-radio custom-control-inline">
+								<input type="radio" name="data_type" value="date" class="custom-control-input"><span class="custom-control-label">Fecha</span>
+							</label>
+							<label class="custom-control custom-radio custom-control-inline">
+								<input type="radio" name="data_type" value="hour" class="custom-control-input"><span class="custom-control-label">Hora</span>
 							</label>
 						</div>
 					</div>

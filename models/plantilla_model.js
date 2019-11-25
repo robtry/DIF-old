@@ -28,7 +28,7 @@ const plantillaSchema = sequelize_db.define('Plantilla',{
 			}
 		},
 		nombre: {type: Sequelize.STRING, allowNull: false, validate:{
-            len: { args: [2,40], msg: "El nombre esta fuera de los rangos permitidos [2,40]" }, 
+            len: { args: [2,200], msg: "El nombre esta fuera de los rangos permitidos [2,200]" }, 
             notEmpty: { msg:"El campo Nombre no puede estar vacío"}, 
         }},
 		descripcion: {type: Sequelize.STRING}
@@ -88,6 +88,12 @@ const campoSchema = sequelize_db.define('Campo', {
 		dato_text:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
+		dato_fecha:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		dato_hora:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
 		id_dato_consistente: {
 			type: Sequelize.INTEGER,
 			references: {
@@ -113,7 +119,7 @@ const campoSchema = sequelize_db.define('Campo', {
 			},
 			justOne(){ //data type
 				if(
-					(this.es_abierta) && (!this.dato_int && !this.dato_string && !this.dato_text) 
+					(this.es_abierta) && (!this.dato_int && !this.dato_string && !this.dato_text && !this.dato_fecha && !this.dato_hora) 
 				){
 					throw new Error('Si el campo/pregunta es abierta se tiene que elegir un Tipo de Dato')
 				}

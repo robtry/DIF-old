@@ -31,17 +31,17 @@
 			<div class="row">
 				<div class="col-md-4 mb-3">
 					<label for="nombre">Nombre(s)</label>
-					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value="{{nombre}}">
 					<p>*Obligatorio</p>
 				</div>
 				<div class="col-md-4 mb-3">
 					<label for="app">Apellido Paterno</label>
-					<input type="text" class="form-control" id="app" name="app" placeholder="" value={{app}}>
+					<input type="text" class="form-control" id="app" name="app" placeholder="" value="{{app}}">
 					<p>*Obligatorio</p>
 				</div>
 				<div class="col-md-4 mb-3">
 					<label for="apm">Apellido Materno</label>
-					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value={{apm}}>
+					<input type="text" class="form-control" id="apm" name="apm" placeholder="" value="{{apm}}">
 					<p>*Obligatorio</p>
 				</div>
 			</div>
@@ -49,7 +49,7 @@
 			<div class="row">
 				<div class="col-md-3 mb-3">
 					<label for="exp">Expediente</label>
-					<input type="text" class="form-control" id="exp" name= "exp" placeholder="" value={{exp}}>
+					<input type="text" class="form-control" id="exp" name= "exp" placeholder="" value="{{exp}}">
 					<p>*Obligatorio</p>
 				</div>
 				
@@ -96,6 +96,38 @@
 				</div>
 			</div>
 
+			<h4>Domicilio</h4>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="calle">Calle</label>
+					<input type="text" class="form-control" id="calle" name="calle" placeholder="" value="{{calle}}">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="no_ext">Número Exterior</label>
+					<input type="text" class="form-control" id="no_ext" name="no_ext" placeholder="" value="{{no_ext}}">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="no_int">Número Interior</label>
+					<input type="text" class="form-control" id="no_int" name="no_int" value="{{no_int}}">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="colonia">Colonia</label>
+					<input type="text" class="form-control" id="colonia" name="colonia" value="{{colonia}}">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="municipio">Municipio</label>
+					<input type="text" class="form-control" id="municipio" name="municipio" value="{{municipio}}">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="cp">CP</label>
+					<input type="text" class="form-control" id="cp" name="cp" value="{{cp}}">
+				</div>
+				<div class="col-md-8 mb-3">
+					<label for="referencias">Entre Calles</label>
+					<input type="text" class="form-control" id="referencias" name="referencias" value="{{referencias}}">
+				</div>
+			</div>
+
 			<h4>Denuncia</h4>
 			<div class="row">
 				<div class="col-md-4 mb-3">
@@ -111,6 +143,37 @@
 					<input type="date" class="form-control" id="fecha_denuncia" name="fecha_denuncia" value={{fecha_denuncia}}>					
 				</div>
 			</div>
+
+			<h4>Derechos</h4>
+			<div class="row">
+			{{#each der}}
+				<label class="custom-control custom-checkbox custom-control-inline">
+					<input name="derechos" type="checkbox" value={{id}} class="custom-control-input"><span class="custom-control-label">{{articulo}} - {{derecho}}</span>
+				</label>
+			{{/each}}
+			</div>
+
+			<div class="row">
+				<div class="card-body border-top">
+					<h4>Enfermedad</h4>
+					<div class="form-group">
+						{{#each enf}}
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<label class="custom-control custom-checkbox">
+										<input name="enfermedades" type="checkbox" value="{{id}}" class="custom-control-input"><span class="custom-control-label"></span>
+									</label>
+								</div>
+							</div>
+							<input type="text" name="enfermedades" class="form-control" placeholder="{{nombre}}">
+						</div>
+						{{/each}}
+					</div>
+				</div>
+			</div>
+
+			<br>
 			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
 		</form>
 	</div>

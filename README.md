@@ -42,10 +42,10 @@ nna_model.js
 -NNA
 -NNA_Derecho
 -NNA_Enfermedad
+-Domicilio
 =-=-=-=-=-=-=-=-=-=-=-=
 denuncia_model.js
 -Denuncia
--Derecho_Vulnerado
 =-=-=-=-=-=-=-=-=-=-=-=
 ```
 
@@ -56,13 +56,14 @@ denuncia_model.js
 * [ ] Attatch files
 * [ ] Search Bar
 * [ ] Views for NNA and User
-* [ ] Address of NNA
 * [ ] Parents of NNA
 * [ ] Delete res on field
 * [ ] Redirect edit and create to show on nna
 * [ ] Correct display ocupation in NNA
 * [ ] cascade for field (res)
 * [ ] cascade for templates
+* [ ] cascade for nna
+* [ ] reload for template
 
 ## To Fix
 

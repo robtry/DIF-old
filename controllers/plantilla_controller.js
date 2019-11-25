@@ -48,6 +48,7 @@ module.exports = {
 				res.redirect("/plantilla/editar/" + p.id)
 			})
 			.catch(err => {
+				console.log(err)
 				const errors_send = getErrorMessages(err);
 				res.render('plantilla/add', {
 					tipo, role, route: "/plantilla/agregar",
@@ -69,7 +70,9 @@ module.exports = {
 			.then(p => {
 				//console.log(p.Campos[0].Dato_Consistente.dato)
 				//console.log(p.Campos[2]);
-				datoCteSchema.findAll()
+				datoCteSchema.findAll({order: [
+					['dato', 'ASC'],
+				]})
 					.then(datos => {
 						res.render('plantilla/add', {
 							route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
@@ -105,12 +108,14 @@ module.exports = {
 			es_sub     = type_field == 'es_sub'
 		}
 		
-		let integer=false, txt=false, tinytxt=false;
+		let integer=false, txt=false, tinytxt=false, date=false, hour=false;
 		//get values
 		if(data_type && es_abierta){
 			integer = data_type == 'int';
 			txt     = data_type == 'txt';
-			tinytxt = data_type == 'str'
+			tinytxt = data_type == 'str';
+			date    = data_type == 'date';
+			hour    = data_type == 'hour';
 		}
 
 		descripcion = (descripcion == '') ? null : descripcion;
@@ -142,6 +147,8 @@ module.exports = {
 							dato_int: integer,
 							dato_string: tinytxt,
 							dato_text: txt,
+							dato_fecha : date,
+							dato_hora : hour
 						})
 							.then(newCamp =>{
 								//si tenia opciones válidas
@@ -163,7 +170,10 @@ module.exports = {
 						})
 						.catch(err => { //de craear un nuevo campo
 							const errors_send = getErrorMessages(err);
-							datoCteSchema.findAll()
+							datoCteSchema.findAll({order: [
+									['dato', 'ASC'],
+								]}
+							)
 								.then(datos => {
 									res.render('plantilla/add', {
 										route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
@@ -177,7 +187,9 @@ module.exports = {
 					})
 					.catch(err => { //de update a la plantilla
 						const errors_send = getErrorMessages(err);
-						datoCteSchema.findAll()
+						datoCteSchema.findAll({order: [
+							['dato', 'ASC'],
+						]})
 						.then(datos => {
 							res.render('plantilla/add', {
 								route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
@@ -211,7 +223,8 @@ module.exports = {
 				}
 				c.destroy()
 					.then(() => res.send('Ok'))
+					.catch(err => console.log("--Error in Deleting Field\n" + err));
 			})
-			.catch(err => console.log("--Error in Deleting Field\n" + err));
+			.catch(err => console.log("--Error in Finding Field\n" + err));
 	},
 }

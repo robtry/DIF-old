@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const sequelize_db = require('../config/keys');
-const derechoSchema = require('./auxiliar_model').derecho;
 const nnaSchema = require('./nna_model').nna;
 
 const denunciaSchema = sequelize_db.define('Denuncia',{
@@ -43,35 +42,9 @@ const denunciaSchema = sequelize_db.define('Denuncia',{
 	}
 );
 
-const derechoVulSchema = sequelize_db.define('Derecho_Vulnerado', {
-		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
-		id_denuncia: {
-			type: Sequelize.INTEGER,
-			allowNull: false,
-			references: {
-				model : denunciaSchema,
-				key : 'id'
-			}
-		},
-		id_derecho: {
-			type: Sequelize.INTEGER,
-			allowNull: false,
-			references: {
-				model : derechoSchema,
-				key : 'id'
-			}
-		}
-	},{
-		freezeTableName: true,
-		underscored: true,
-		timestamps: false,
-	}
-);
-
 denunciaSchema.belongsTo(nnaSchema, {foreignKey: 'id_nna', targetKey: 'exp'});
 nnaSchema.hasMany(denunciaSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
 
 module.exports = {
 	denuncia : denunciaSchema,
-	derechoVul : derechoVulSchema
 }

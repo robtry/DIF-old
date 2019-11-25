@@ -12,6 +12,8 @@ router.get('/nna/editar/:exp', nnaController.getEditNNA)
 router.post('/nna/editar/:exp', nnaController.editNNA);
 //Mostrar
 router.get('/nna/:exp', nnaController.getNNA);
+//delete
+router.delete('/nna/:exp', nnaController.deleteNNA)
 
 
 
