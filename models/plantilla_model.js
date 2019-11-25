@@ -29,8 +29,7 @@ const plantillaSchema = sequelize_db.define('Plantilla',{
 		},
 		nombre: {type: Sequelize.STRING, allowNull: false, validate:{
             len: { args: [2,40], msg: "El nombre esta fuera de los rangos permitidos [2,40]" }, 
-            notEmpty: { msg:"El campo nombre no puede estar vacio"}, 
-            //isAlphanumeric: {msg: "Sólo se aceptan letras y números en el nombre"} 
+            notEmpty: { msg:"El campo Nombre no puede estar vacío"}, 
         }},
 		descripcion: {type: Sequelize.STRING}
 		//created at and updated at alerady defined by Sequelize
@@ -52,12 +51,19 @@ const campoSchema = sequelize_db.define('Campo', {
 			}
 		},
 		pregunta:       {type: Sequelize.STRING, allowNull: false, validate:{
-			notEmpty: { msg:"El campo dato no puede estar vacio"}
+			notEmpty: { msg:"El Campo/Pregunta/Subsección que sera agregado no puede estar vacío"}
 		}},
 		info_llenado:   {type: Sequelize.STRING, validate:{
-			notEmpty: { msg:"El campo info_llenado no puede estar vacio"}
+			notEmpty: { msg:"El campo de información de llenado no puede estar vacío"}
+		}},
+		//tipo
+		es_abierta:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		es_cerrada:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		es_multivalor:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		es_consistente: {type: Sequelize.BOOLEAN, allowNull: false, validate:{
@@ -66,7 +72,20 @@ const campoSchema = sequelize_db.define('Campo', {
 		es_archivo:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
+		es_subseccion:     {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
 		envio_opciones: {type: Sequelize.BOOLEAN, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		//dato
+		dato_int:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		dato_string:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
+			//isIn: { args: [true, false], masg: "Elija una opción valida"}
+		}},
+		dato_text:   {type: Sequelize.BOOLEAN, allowNull: false, validate:{
 			//isIn: { args: [true, false], masg: "Elija una opción valida"}
 		}},
 		id_dato_consistente: {
@@ -82,25 +101,32 @@ const campoSchema = sequelize_db.define('Campo', {
 		underscored: true,
 		timestamps: false,
 		validate : {
-			oneOrAnyone(){//esta  no esta ista
+			kindField(){
+				let cont = 0;
+				const options = new Array(this.es_abierta, this.es_cerrada, this.es_multivalor, this.es_consistente, this.es_archivo, this.es_subseccion);
+				options.forEach((v, i, a) => {
+					if(v){ cont++ }
+				})
+				if(cont != 1){
+					throw new Error('Se debe seleccionar un Tipo de Pregunta (abierta,opción,...)')
+				}
+			},
+			justOne(){ //data type
 				if(
-					(this.es_cerrada && this.es_consistente && this.es_archivo) ||
-					(this.es_cerrada && (this.es_consistente || this.es_archivo)) ||
-					(this.es_consistente && (this.es_cerrada || this.es_archivo)) ||
-					(this.es_archivo && (this.es_cerrada || this.es_consistente))
+					(this.es_abierta) && (!this.dato_int && !this.dato_string && !this.dato_text) 
 				){
-					throw new Error('Sólo de puede marcar una casilla o niguna')
+					throw new Error('Si el campo/pregunta es abierta se tiene que elegir un Tipo de Dato')
 				}
 			},
 			validateDatoConstante(){
 				if((this.es_consistente) && (this.id_dato_consistente == null)){
-					throw new Error('Si el campo va a ser constante se debe elegir de donde recuperar la información')
+					throw new Error('Si el dato/pregunta va a ser constante se debe elegir de donde recuperar la información')
 				}
 			
 			},
 			validateCerrada(){
 				if(this.es_cerrada && (!this.envio_opciones)){
-					throw new Error('Si el campo es cerrado se deben mandar opciones en el formato correcto')
+					throw new Error('Si el campo es de opción u opciones se deben mandar opciones en el formato correcto')
 				}
 			}
 		}
@@ -151,7 +177,7 @@ const formatSchema = sequelize_db.define('Formato', {
 	}
 );
 
-const resSchema = sequelize_db.define('Respuesta',{
+const resStrSchema = sequelize_db.define('Respuesta_Str',{
 		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_formato: {
 			type: Sequelize.INTEGER,
@@ -179,13 +205,69 @@ const resSchema = sequelize_db.define('Respuesta',{
 	}
 );
 
+const resIntSchema = sequelize_db.define('Respuesta_Int',{
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+		id_formato: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			references: {
+				model : formatSchema,
+				key : 'id'
+			}
+		},
+		id_campo: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			references: {
+				model : campoSchema,
+				key : 'id'
+			}
+		},
+		respuesta: {type: Sequelize.INTEGER, allowNull:false,defaultValue:'', validate: {
+			notEmpty: { msg: "Llene los campos requeridos"}
+		}}
+	},{
+		freezeTableName: true,
+		underscored: true,
+		timestamps: true,
+	}
+);
+
+const resTextSchema = sequelize_db.define('Respuesta_Text',{
+		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+		id_formato: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			references: {
+				model : formatSchema,
+				key : 'id'
+			}
+		},
+		id_campo: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+			references: {
+				model : campoSchema,
+				key : 'id'
+			}
+		},
+		respuesta: {type: Sequelize.TEXT, allowNull:false,defaultValue:'', validate: {
+			notEmpty: { msg: "Llene los campos requeridos"}
+		}}
+	},{
+		freezeTableName: true,
+		underscored: true,
+		timestamps: true,
+	}
+);
+
 const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		id_respuesta: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
 			references: {
-				model : resSchema,
+				model : resIntSchema,
 				key : 'id'
 			}
 		},
@@ -205,23 +287,28 @@ const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 );
 
 campoSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
-plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id'});
+plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id', onDelete: 'cascade', hooks: true});
 
 formatSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
-plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'id'});
+plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'id', onDelete: 'cascade', hooks: true});
 
-nnaSchema.hasMany(formatSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
 formatSchema.belongsTo(nnaSchema, {foreignKey: 'id_nna', targetKey: 'exp'});
+nnaSchema.hasMany(formatSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
 
-opcionSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+opcionSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id', onDelete: 'cascade'});
 campoSchema.hasMany(opcionSchema,  {foreignKey: 'id_campo', sourceKey: 'id'});
+
+campoSchema.belongsTo(datoConsistenteSchema,  {foreignKey: 'id_dato_consistente', targetKey: 'id'});
+datoConsistenteSchema.hasMany(campoSchema,    {foreignKey: 'id_dato_consistente', sourceKey: 'id'});
 
 module.exports = {
 	plantilla : plantillaSchema,
 	campo : campoSchema,
 	opcion : opcionSchema,
 	formato : formatSchema,
-	respuesta : resSchema,
+	respuesta_str : resStrSchema,
+	respuesta_int : resIntSchema,
+	respuesta_text : resTextSchema,
 	resop : resOpSchema,
 	datoConst : datoConsistenteSchema
-}
+}	

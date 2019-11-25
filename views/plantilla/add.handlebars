@@ -33,7 +33,7 @@
 			<div class="row">
 				<div class="col-md-10 mb-10">
 					<label for="nombre">Nombre(s)</label>
-					<input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value={{nombre}}>
+					<input type="text" class="form-control" id="nombre" name="nombre" value="{{nombre}}">
 				</div>
 				<div class="col-md-10 mb-10">
 					<label for="descripcion">Descripción</label>
@@ -45,54 +45,155 @@
 			 <input type="hidden" id="tipo" name="tipo" value={{tipo}}>
 			{{#if editing}}
 				<br>
-				<h4>Campos</h4>
-				{{#each campos}}
-					<p> <b>Pregunta:</b> {{pregunta}}</p>
-					<p> <b>Información de llenado:</b> {{info_llenado}}</p>
-
+				{{#if campos.length}}
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="card">
+							<h5 class="card-header">Preview</h5>
+							<div class="card-body">
+								<div class="table-responsive ">
+									<table class="table">
+										<thead>
+											<tr>
+												<th scope="col">Pregunta</th>
+												<th scope="col">Info Aux</th>
+												<th scope="col">Abierta</th>
+												<th scope="col">Dato Cte</th>
+												<th scope="col">Opciones</th>
+												<th scope="col">Archivo</th>
+												<th scope="col">#</th>
+											</tr>
+										</thead>
+										<tbody>
+											{{#each campos}}
+											<tr>
+												<td>
+													{{#if es_subseccion}}
+														<h5>{{pregunta}}</h5>
+													{{else}}
+														{{pregunta}}
+													{{/if}}
+												</td>
+												<td>
+													{{#if info_llenado}}
+														{{info_llenado}}
+													{{else}}
+														x
+													{{/if}}
+												</td>
+												<td>
+													{{#if es_abierta}}
+														{{#if dato_int}}
+															int
+														{{else}}{{#if dato_string}}
+															char(255)
+														{{else}}
+															texto
+														{{/if}}{{/if}}
+													{{else}}
+														x
+													{{/if}}
+												</td>
+												<td>
+													{{#if es_consistente}}
+														{{Dato_Consistente.dato}}
+													{{else}}
+														x
+													{{/if}}
+												</td>
+												<td>
+												{{#each Opcions}}
+													{{opcion}} <br>
+												{{else}}
+													x
+												{{/each}}
+												</td>
+												<td>
+													{{#if es_archivo}}
+														Si
+													{{else}}
+														x
+													{{/if}}
+												</td>
+												<td>
+													<button type="button" class="btn btn-sm btn-outline-light delete-field">
+														<i class="far fa-trash-alt" data-id={{id}}></i>
+													</button>
+												</td>
+											</tr>
+											{{/each}}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
 				{{else}}
-					<p>No se han agregado</p>
-				{{/each}}
-				<h4>Agregar Campos</h4>
+					<p>Aún no hay nada para agregar</p>
+				{{/if}}
+				<br>
+				<h3>Agregar Subsección / Campo / Pregunta</h3>
 				<div class="row">
 					<div class="col-md-6 mb-6">
-						<label for="campo">Dato</label>
-						<input type="text" class="form-control" id="campo" name="campo" placeholder="" value={{campo}}>
+						<label for="campo">Campo</label>
+						<input type="text" class="form-control" id="campo" name="campo" placeholder="" value="{{campo}}">
 					</div>
 					<div class="col-md-6 mb-6">
 						<label for="info_llenado">Información de llenado</label>
-						<textarea class="form-control" id="info_llenado" rows="3" name="info_llenado">{{info_llenado}}</textarea>
+						<textarea class="form-control" id="info_llenado" rows="2" name="info_llenado">{{info_llenado}}</textarea>
 					</div>
 				</div>
 				<div class="row">
+					<h5> Tipo del Campo / Dato / Pregunta </h5>
 					<div class="col-md-12 mb-12">
-						<label class="custom-control custom-checkbox custom-control-inline">
-							<input type="checkbox" class="custom-control-input" name="es_cerrada" {{es_cerrada_chk}}><span class="custom-control-label">Cerrada</span>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_abierta" class="custom-control-input"><span class="custom-control-label">Abierta</span>
 						</label>
-						<label class="custom-control custom-checkbox custom-control-inline">
-							<input type="checkbox" class="custom-control-input" name="es_cte" {{es_cte_chk}}><span class="custom-control-label">Constante</span>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_cerrada" class="custom-control-input"><span class="custom-control-label">Opción</span>
 						</label>
-						<label class="custom-control custom-checkbox custom-control-inline">
-							<input type="checkbox" class="custom-control-input" name="es_archivo" {{es_archivo_chk}}><span class="custom-control-label">Archivo</span>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_multi" class="custom-control-input"><span class="custom-control-label">Multiple Opción</span>
+						</label>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_cte" class="custom-control-input"><span class="custom-control-label">Constante</span>
+						</label>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_archivo" class="custom-control-input"><span class="custom-control-label">Archivo</span>
+						</label>
+						<label class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="type_field" value="es_sub" class="custom-control-input"><span class="custom-control-label">Subsección</span>
 						</label>
 					</div>
 				</div>
-				<div id="campo_op">
-					<br>
-					<h4>Opciones</h4>
-					<div class="row">
-						<div class="col-md-8 mb-8">
+				<div class="row">
+					<div id="campo_op">
+						<br>
+						<h4>Opciones</h4>
+						<div class="col-md-12 mb-12">
 							<label for="opciones">Posibles valores</label>
-							<textarea class="form-control" id="opciones" rows="3" name="opciones">{{opciones}}</textarea>
-							<p><i>SEPARADOS POR '';'</i></p>
+							<textarea class="form-control" id="opciones" rows="3" cols="4" name="opciones">{{opciones}}</textarea>
+							<p><i>SEPARADOS POR SALTO DE LINEA</i></p>
 						</div>
 					</div>
-				</div>
-				<div id="dato_cte">
-					<br>
-					<h4>Recuperar</h4>
-					<div class="row">
-						<div class="col-md-4 mb-3">
+					<div id="data-type">
+						<br>
+						<h4>Tipo de Dato</h4>
+						<div class="col-md-12 mb-12">
+							<label class="custom-control custom-radio custom-control-inline">
+								<input type="radio" name="data_type" value="int" class="custom-control-input"><span class="custom-control-label">Integer</span>
+							</label>
+							<label class="custom-control custom-radio custom-control-inline">
+								<input type="radio" name="data_type" value="str" class="custom-control-input"><span class="custom-control-label">String (255)</span>
+							</label>
+							<label class="custom-control custom-radio custom-control-inline">
+								<input type="radio" name="data_type" value="txt" class="custom-control-input"><span class="custom-control-label">Text</span>
+							</label>
+						</div>
+					</div>
+					<div id="dato-cte">
+						<br>
+						<h4>Recuperar</h4>
+						<div class="col-md-12 mb-12">
 							<label for="campo_pos">INFO PRELLENADO</label>
 							<select class="custom-select d-block w-100" id="campo_pos" name="campo_pos">
 								{{#if campo_pos}}

@@ -10,6 +10,7 @@ const resopSchema =  require('../models/resop_model').resop;
 
 const getTipo = require('./active_controller').getTipo;
 const getAddPlantillaRoute = require('./active_controller').getAddPlantillaRoute;
+const getErrorMessages = require('./active_controller').getErrorMessages;
 
 
 module.exports = {
@@ -19,7 +20,6 @@ module.exports = {
 		return (req, res) => {
 			plantillaSchema.findAll({ where: { id_tipo : role} })
 				.then(plantilla => {
-					//console.log(usr)
 					const tipo = getTipo(role);
 					const add_route =  getAddPlantillaRoute(role);
 					res.render('plantilla/plantillas', {plantilla, tipo, role, add_route})
@@ -45,13 +45,10 @@ module.exports = {
 			descripcion
 		})
 			.then(p => {
-				res.redirect(getAddPlantillaRoute(role))
+				res.redirect("/plantilla/editar/" + p.id)
 			})
 			.catch(err => {
-				let errors_send  = [];
-				for(let i = 0; i < err.errors.length; i++){
-					errors_send.push({text:err.errors[i].message});
-				}
+				const errors_send = getErrorMessages(err);
 				res.render('plantilla/add', {
 					tipo, role, route: "/plantilla/agregar",
 					errors_send, nombre, descripcion,
@@ -61,13 +58,17 @@ module.exports = {
 	},
 
 	getEditPlantilla: (req, res) => {
-		plantillaSchema.findByPk(req.params.id, {include: [ campoSchema ]})
+		plantillaSchema.findByPk(req.params.id, { //include: [{ all: true }]
+			include: [
+				{model : campoSchema, include:[
+					{all: true}
+				]}
+			]
+
+		})
 			.then(p => {
-				//console.log(p)
-				p.Campos.forEach(el => {
-					console.log(el)
-				})
-				//opcionSchema.findAll({})
+				//console.log(p.Campos[0].Dato_Consistente.dato)
+				//console.log(p.Campos[2]);
 				datoCteSchema.findAll()
 					.then(datos => {
 						res.render('plantilla/add', {
@@ -82,16 +83,38 @@ module.exports = {
 	},
 
 	editPlantilla: (req, res) => {
-		//console.log(req.body);
-		let {nombre,descripcion,role,tipo,//
-			campo,info_llenado,es_cerrada,es_cte,es_archivo,//
-			opciones,campo_pos} = req.body;
+		console.log(req.body);
+		
+		let {nombre, descripcion, role, //plantilla
+			campo, info_llenado, type_field, // campo
+			opciones, campo_pos, data_type} = req.body;
+		
+		/*console.log(data_type)//undefined
+		console.log(type_field);//undefined
+		console.log(opciones);//empty
+		console.log(campo_pos);//empty*/
+
+		let es_abierta=false, es_cerrada=false, es_multivalor=false, es_cte=false, es_archivo=false, es_sub=false;
+		//get values:
+		if(type_field){
+			es_abierta = type_field == 'es_abierta';
+			es_cerrada = type_field == 'es_cerrada';
+			es_multivalor = type_field == 'es_multi';
+			es_cte     = type_field == 'es_cte';
+			es_archivo = type_field == 'es_archivo';
+			es_sub     = type_field == 'es_sub'
+		}
+		
+		let integer=false, txt=false, tinytxt=false;
+		//get values
+		if(data_type && es_abierta){
+			integer = data_type == 'int';
+			txt     = data_type == 'txt';
+			tinytxt = data_type == 'str'
+		}
 
 		descripcion = (descripcion == '') ? null : descripcion;
 		info_llenado = (info_llenado == '') ? null : info_llenado;
-		es_cerrada = (es_cerrada) ? true : false;
-		es_cte = (es_cte) ? true : false;
-		es_archivo = (es_archivo) ? true : false;
 		opciones = (opciones == '') ? null : opciones;
 		campo_pos = (campo_pos == '') ? null : campo_pos;
 
@@ -103,21 +126,27 @@ module.exports = {
 					p.save()			
 					.then(pNew => {
 						//simepre se va a crear
-						let envio_op = (opciones) ? opciones.split(";").length > 1 : false;
+						let envio_op = (opciones) ? opciones.split("\n").length > 1 : false;
 						campoSchema.create({
 							id_plantilla : pNew.id,
 							pregunta : campo,
 							info_llenado,
+							es_abierta,
 							es_cerrada,
-							es_consistente : es_cte,
+							es_multivalor,
+							es_consistente: es_cte,
 							es_archivo,
+							es_subseccion: es_sub,
 							id_dato_consistente : campo_pos,
-							envio_opciones : envio_op
+							envio_opciones : envio_op,
+							dato_int: integer,
+							dato_string: tinytxt,
+							dato_text: txt,
 						})
 							.then(newCamp =>{
-								//si tenia opciones válido
+								//si tenia opciones válidas
 								if(envio_op){
-									opciones = opciones.split(";")
+									opciones = opciones.split("\n")
 									//console.log(opciones)
 									for(let i = 0; i < opciones.length; i++){
 										if(opciones[i].length > 0){
@@ -125,54 +154,64 @@ module.exports = {
 												id_campo : newCamp.id,
 												opcion : opciones[i],
 											})
-											.then(op => {})
-											.catch(err => {console.log(err)})
+											.then(() => {})
+											.catch(err => {"--Error Adding Options--\n" + console.log(err)})
 										}
 									}
 								}
 								res.redirect("/plantilla/editar/" + pNew.id)
 						})
 						.catch(err => { //de craear un nuevo campo
-							//console.log(p)
-							let errors_send  = [];
-							for(let i = 0; i < err.errors.length; i++){
-								errors_send.push({text:err.errors[i].message});
-							}
+							const errors_send = getErrorMessages(err);
 							datoCteSchema.findAll()
-							.then(datos => {
-								res.render('plantilla/add', {
-									route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
-									role : p.id_tipo, nombre, descripcion,
-									campos : p.Campos, datos, errors_send,
-									campo, info_llenado, opciones,
-									es_cerrada_chk : (es_cerrada) ? "checked" : '',
-									es_cte_chk : (es_cte) ? "checked" : '',
-									es_archivo_chk : (es_archivo) ? "checked" : '',
-								});
-							})
-							.catch(err => console.log(err));
+								.then(datos => {
+									res.render('plantilla/add', {
+										route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
+										role : p.id_tipo, nombre, descripcion,
+										campos : p.Campos, datos, errors_send,
+										campo, info_llenado, opciones
+									});
+								})
+								.catch(err => console.log(err));
 						});
 					})
 					.catch(err => { //de update a la plantilla
-						let errors_send  = [];
-						for(let i = 0; i < err.errors.length; i++){
-							errors_send.push({text:err.errors[i].message});
-						}
+						const errors_send = getErrorMessages(err);
 						datoCteSchema.findAll()
 						.then(datos => {
 							res.render('plantilla/add', {
 								route: "/plantilla/editar/" + p.id, editing:true, accion:"Actualizar",
 								role : p.id_tipo, nombre, descripcion,
 								campos : p.Campos, datos, errors_send,
-								campo, info_llenado, opciones,
-								es_cerrada_chk : (es_cerrada) ? "checked" : '',
-								es_cte_chk : (es_cte) ? "checked" : '',
-								es_archivo_chk : (es_archivo) ? "checked" : '',
+								campo, info_llenado, opciones
 							});
 						})
 						.catch(err => console.log(err));
 					});
 			})
 			.catch(err => console.log(err));
+	},
+
+	deletePlantilla: (req, res) => {
+		plantillaSchema.destroy({where:{id: parseInt(req.params.id)}})
+			.then(() => res.send('Ok'))
+			.catch(err => console.log("--Error in Deleting Template\n" + err));
+	},
+
+	deleteCampo: (req, res) => {
+		campoSchema.findByPk(parseInt(req.params.id), { include: [{ all: true }]})
+			.then(c =>{
+				//console.log(c.Opcions)
+				if(c.Opcions){
+					for(let i = 0; i < c.Opcions.length; i++){
+						opcionSchema.destroy({where: {id : c.Opcions[i].id} })
+							.then()
+							.catch(err => console.log("--Error in Deleting Nested Option\n" + err));
+					}
+				}
+				c.destroy()
+					.then(() => res.send('Ok'))
+			})
+			.catch(err => console.log("--Error in Deleting Field\n" + err));
 	},
 }

@@ -16,5 +16,10 @@ router.post('/plantilla/agregar', plantillaController.addPlantilla)
 //editar
 router.get('/plantilla/editar/:id', plantillaController.getEditPlantilla);
 router.post('/plantilla/editar/:id', plantillaController.editPlantilla);
+//delete
+router.delete('/plantilla/:id', plantillaController.deletePlantilla);
+
+//fields
+router.delete('/plantilla/campo/:id', plantillaController.deleteCampo);
 
 module.exports = router;

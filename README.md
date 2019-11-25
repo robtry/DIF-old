@@ -52,28 +52,29 @@ denuncia_model.js
 ## To Do
 
 * [x] Change small ints | not implemented | https://github.com/sequelize/sequelize/issues/9397
-* [ ] Add validations (unique also)
+* [ ] Add edit option
+* [ ] Attatch files
+* [ ] Search Bar
+* [ ] Views for NNA and User
+* [ ] Address of NNA
+* [ ] Parents of NNA
+* [ ] Delete res on field
+* [ ] Redirect edit and create to show on nna
+* [ ] Correct display ocupation in NNA
+* [ ] cascade for field (res)
+* [ ] cascade for templates
+
+## To Fix
+
+* [ ] Add Unique validation
+* [ ] Warnigns in html
+
+### In the near future
+
+* [ ] Implement sequelize migration 
+* [ ] Scopes (trims)
 * [ ] Implement user roles (admin)
 * [ ] Create login
 * [ ] Toggle active class on left menu
 * [ ] Pagination
 * [ ] Add breadcumbs
-* [ ] Add edit option
-* [ ] Attatch files
-* [x] Unique no_cedula on User and exp on NNA and pass null empty values
-* [ ] Custom message for unique pk
-* [ ] Search Bar
-* [ ] Views for NNA and User
-* [ ] Scopes (trims)
-
-
-## To Fix
-
-* [ ] Warnigns in html
-* [ ] Ajax delete
-* [ ] Correct display ocupation in NNA
-* [ ] Redirect edit and create to show
-
-### In the near future
-
-* [ ] Implement sequelize migration 

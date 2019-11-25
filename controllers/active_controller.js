@@ -34,4 +34,6 @@ module.exports ={
         //console.log(role + "|" + aux)
         return "/" + aux + "/plantilla/agregar"
     }
+
+    
 }
