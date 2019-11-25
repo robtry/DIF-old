@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="page-header">
-			<h2 class="pageheader-title">Dasplegando Derechos</h2>
+			<h2 class="pageheader-title">Dasplegando Datos Constantes</h2>
 			{{!-- <div class="page-breadcrumb">
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb">
@@ -59,6 +59,31 @@
 			</div>
 		</div>
 	</div>
+	<form action="/datosconstantes" method="POST" class="needs-validation" autocomplete="off">
+		<br>
+		<h3>Agregar Datos</h3>
+		<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="nombre">Dato</label>
+					<input type="text" class="form-control" id="dato" name="dato">
+					<p>*Obligatorio</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="multivalor">Multivalor</label>
+					<select class="custom-select d-block w-100" id="multivalor" name="multivalor">
+						{{#if sexo}}
+							<option value={{sexo}}>{{sexo}}</option>
+						{{else}}
+							<option value="">Seleccionar</option>
+						{{/if}}
+						<option value="true">true</option>
+						<option value="false">false</option>
+					</select>
+				</div>
+			</div>
+			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+
+	</form>
 </div>
 	<!-- ============================================================== -->
 	<!-- end basic table  -->

@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="page-header">
-			<h2 class="pageheader-title">Dasplegando Escolaridad</h2>
+			<h2 class="pageheader-title">Dasplegando Enfermedades</h2>
 			{{!-- <div class="page-breadcrumb">
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb">
@@ -43,7 +43,6 @@
 									<td>{{nombre}}</td>
 									<td>
 										<div class="btn-group ml-auto"> 
-                                            <a href="/nna/editar/{{exp}}" class="btn btn-sm btn-outline-light">Editar</a>
 											<button class="btn btn-sm btn-outline-light delete-nna" data-id={{exp}}>
 												<i class="far fa-trash-alt"></i>
 											</button>
@@ -59,6 +58,19 @@
 			</div>
 		</div>
 	</div>
+	<form action="/enfermedades" method="POST" class="needs-validation" autocomplete="off">
+		<br>
+		<h3>Agregar Enfermedad</h3>
+		<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="nombre">Nombre</label>
+					<input type="text" class="form-control" id="nombre" name="nombre">
+					<p>*Obligatorio</p>
+				</div>
+			</div>
+			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+
+	</form>
 </div>
 	<!-- ============================================================== -->
 	<!-- end basic table  -->

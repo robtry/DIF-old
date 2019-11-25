@@ -6,7 +6,7 @@ const nnaSchema = require('./nna_model').nna;
 const datoConsistenteSchema = sequelize_db.define('Dato_Consistente',{
 		id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
 		dato: {type: Sequelize.STRING, allowNull: false, validate: {
-			isAplhanumeric: { msg:"Ingrese un dato valido"},
+			isAplha: { msg:"Ingrese un dato valido"},
 			notEmpty: { msg:"El campo nombre no puede estar vacio"}
 		}},
 		es_multivalor: {type: Sequelize.BOOLEAN, allowNull: false}

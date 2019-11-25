@@ -14,7 +14,8 @@ require('sequelize').DATE.prototype._stringify = function _stringify(date, optio
 const welcomeRouter = require('./routes/welcomeRoute');
 const usuarioRouter = require('./routes/usuarioRoute');
 const nnaRouter     = require('./routes/nnaRoute');
-const plantilaRouter = require('./routes/plantillaRoute')
+const plantilaRouter = require('./routes/plantillaRoute');
+const auxiliarsRouter = require('./routes/auxiliarsRoutes');
 
 // Database Connection
 sequelize_con
@@ -46,6 +47,7 @@ app.use(welcomeRouter);
 app.use(usuarioRouter);
 app.use(nnaRouter);
 app.use(plantilaRouter);
+app.use(auxiliarsRouter);
 
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`))

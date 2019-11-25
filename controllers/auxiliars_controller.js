@@ -1,7 +1,7 @@
 const derechoSchema = require('../models/auxiliar_model').derecho;
 const escolaridadSchema = require('../models/auxiliar_model').escolaridad;
 const enfermedadSchema = require('../models/auxiliar_model').enfermedad;
-const datoconstanteSchema = require('../models/plantillas_model').datoConsistente;
+const datoconstanteSchema = require('../models/plantilla_model').datoConst;
 
 module.exports = {
 	getDerechos : (req, res) => {
@@ -35,5 +35,41 @@ module.exports = {
             res.render('auxiliars/datosconstantes', {datoconstante})
         })
         .catch(err => console.log(err))
+    },
+
+    postDerechos : (req, res) => {
+        let { articulo , derecho} = req.body;
+        derechoSchema.create({
+            articulo: articulo, 
+            derecho: derecho
+        }).then()
+           .catch(err => { console.log(err)});
+    },
+
+    postEscolaridad: (req, res) => {
+        let {  nivel } = req.body;
+        escolaridadSchema.create({
+            nivel : nivel
+        }).then()
+           .catch(err => { console.log(err)});
+    },
+
+    postEnfermedades: (req, res) => {
+        let {  nombre } = req.body;
+        enfermedadSchema.create({
+           nombre : nombre
+        }).then()
+           .catch(err => { console.log(err)});
+    },
+
+    postDatosConstantes : (req, res) => {
+		let {  dato, multivalor } = req.body;
+        datoconstanteSchema.create({
+           dato: dato,
+           es_multivalor : multivalor
+
+        }).then()
+           .catch(err => { console.log(err)});
     }
+    
 }
