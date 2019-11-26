@@ -43,8 +43,7 @@
 									<td>{{derecho}}</td>
 									<td>
 										<div class="btn-group ml-auto"> 
-                                            <a href="/nna/editar/{{exp}}" class="btn btn-sm btn-outline-light">Editar</a>
-											<button class="btn btn-sm btn-outline-light delete-nna" data-id={{exp}}>
+											<button class="btn btn-sm btn-outline-light delete-dercho" data-id={{id}}>
 												<i class="far fa-trash-alt"></i>
 											</button>
                                         </div>
@@ -59,6 +58,24 @@
 			</div>
 		</div>
 	</div>
+	<form action="/derechos" method="POST" class="needs-validation" autocomplete="off">
+		<br>
+		<h3>Agregar Derechos</h3>
+		<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="nombre">Articulo</label>
+					<input type="text" class="form-control" id="articulo" name="articulo">
+					<p>*Obligatorio</p>
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="app">Derecho</label>
+					<input type="text" class="form-control" id="derecho" name="derecho">
+					<p>*Obligatorio</p>
+				</div>
+			</div>
+			<button class="btn btn-primary btn-lg" type="submit">Agregar</button>
+
+	</form>
 </div>
 	<!-- ============================================================== -->
 	<!-- end basic table  -->

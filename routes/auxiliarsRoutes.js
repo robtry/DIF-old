@@ -4,9 +4,13 @@ const auxiliarsController = require('../controllers/auxiliars_controller');
 
 //index
 router.get('/derechos', auxiliarsController.getDerechos);
-router.get('/escolaridades', auxiliarsController.getEscolaridad);
-router.get('/enfermedades', auxiliarsController.getEnfermedad);
+router.post('/derechos', auxiliarsController.postDerechos);
+router.get('/escolaridades', auxiliarsController.getEscolaridades);
+router.post('/escolaridades', auxiliarsController.postEscolaridad);
+router.get('/enfermedades', auxiliarsController.getEnfermedades);
+router.post('/enfermedades', auxiliarsController.postEnfermedades);
 router.get('/datosconstantes', auxiliarsController.getDatosConstantes);
+router.post('/datosconstantes', auxiliarsController.postDatosConstantes);
 
 
 
