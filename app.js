@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended : false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Set up Routes
 app.use(welcomeRouter);

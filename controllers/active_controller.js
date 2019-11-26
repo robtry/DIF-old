@@ -2,12 +2,14 @@ module.exports ={
 
     /* Errors */
     getErrorMessages : (err) => {
-        //console.log(err);
-        let errors_send  = [];
-        for(let i = 0; i < err.errors.length; i++){
-            errors_send.push({text:err.errors[i].message});
+        if(err.errors){
+            let errors_send  = [];
+            for(let i = 0; i < err.errors.length; i++){
+                errors_send.push({text:err.errors[i].message});
+            }
+            return errors_send;
         }
-        return errors_send;
+        console.log("-- Algo grave esta pasanding!!!! --\n" + err)
     },
 
     /* User */

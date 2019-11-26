@@ -33,7 +33,7 @@ const denunciaSchema = sequelize_db.define('Denuncia',{
 				console.log(this.averiguacion_previa);
 				console.log(this.seguimiento_acta)*/
 				if(
-					!( (this.fecha_denuncia !== null) && (this.averiguacion_previa !== null)  && (this.seguimiento_acta !== null) ) 
+					( (!this.fecha_denuncia) || (!this.averiguacion_previa)  || (!this.seguimiento_acta) ) 
 				){
 					throw new Error('Deben completarse todos los campos de la Denuncia')
 				}

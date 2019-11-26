@@ -84,15 +84,21 @@
 													{{#if es_abierta}}
 														{{#if dato_int}}
 															Int
-														{{else}}{{#if dato_string}}
-															Char(255)
-														{{else}}{{#if dato_txt}}
-															Texto
-														{{else}}{{#if dato_fecha}}
-															Fecha
 														{{else}}
-															Hora
-														{{/if}}{{/if}}{{/if}}{{/if}}
+															{{#if dato_string}}
+																Char(255)
+															{{else}}
+																{{#if dato_text}}
+																	Texto
+																{{else}}
+																	{{#if dato_fecha}}
+																		Fecha
+																	{{else}}
+																		Hora
+																	{{/if}}
+																{{/if}}
+															{{/if}}
+														{{/if}}
 													{{else}}
 														x
 													{{/if}}

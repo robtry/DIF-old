@@ -52,7 +52,6 @@ denuncia_model.js
 ## To Do
 
 * [x] Change small ints | not implemented | https://github.com/sequelize/sequelize/issues/9397
-* [ ] Add edit option
 * [ ] Attatch files
 * [ ] Search Bar
 * [ ] Views for NNA and User
@@ -64,6 +63,9 @@ denuncia_model.js
 * [ ] cascade for templates
 * [ ] cascade for nna
 * [ ] reload for template
+* [ ] add hour table and data table
+* [ ] index for fields
+* [ ] edit for fields
 
 ## To Fix
 
