@@ -37,23 +37,25 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th class="center">#</th>
-								<th>Item</th>
-								<th>Description</th>
-								<th class="right">Unit Cost</th>
-								<th class="center">Qty</th>
-								<th class="right">Total</th>
+								<th>Nombre</th>
+								<th>Descripción</th>
+								<th class="right">Última fecha de actualización</th>
 							</tr>
 						</thead>
 						<tbody>
+							{{#each formatos}}
 							<tr>
-								<td class="center">1</td>
-								<td class="left strong">Origin License</td>
-								<td class="left">Extended License</td>
-								<td class="right">$1500,00</td>
-								<td class="center">1</td>
-								<td class="right">$1500,00</td>
+								<td class="left strong">{{Plantilla.nombre}}</td>
+								<td class="left">{{Plantilla.descripcion}}</td>
+								<td class="right">{{updated_at}}</td>
 							</tr>
+							{{else}}
+								<tr>
+									<td colspan="3">
+										<h3>Sin resultados</h3>
+									</td>
+								</tr>
+							{{/each}}
 						</tbody>
 					</table>
 				</div>

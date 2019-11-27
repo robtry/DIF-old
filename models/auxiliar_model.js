@@ -49,7 +49,7 @@ const tipoPuSchema = sequelize_db.define('TipoPU', {
 		}}
 	},{
 		freezeTableName: true,
-		//underscored: true,
+		underscored: true,
 		timestamps: false,
 	}
 );

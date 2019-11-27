@@ -35,6 +35,18 @@ module.exports ={
         else {aux = ''}
         //console.log(role + "|" + aux)
         return "/" + aux + "/plantilla/agregar"
+    },
+
+    /* Plantilla */
+    getAddFormatRoute:(role) => {
+        aux = ''
+        if(role == 1){aux = "tsocial"}
+        else if(role == 2){aux = "medico"}
+        else if(role == 3){aux = "psicologo"}
+        else if(role == 4){aux = "abogado"}
+        else {aux = ''}
+        //console.log(role + "|" + aux)
+        return "/" + aux + "/plantilla/agregar"
     }
 
     

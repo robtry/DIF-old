@@ -55,7 +55,7 @@ const userFormatSchema = sequelize_db.define('Usuario_Formato', {
 				key : 'id'
 			}
 		},
-		id_usuarios: {
+		id_usuario: {
 			type: Sequelize.INTEGER,
 			allowNull: false,
 			references: {
@@ -70,6 +70,8 @@ const userFormatSchema = sequelize_db.define('Usuario_Formato', {
 	}
 );
 
+formatSchema.belongsToMany(userSchema, {through: userFormatSchema, foreignKey:'id_usuario', otherKey: 'id_usuario'});
+userSchema.belongsToMany(formatSchema, {through: userFormatSchema, foreignKey:'id', otherKey: 'id_formato' });
 
 module.exports = { 
 	User : userSchema,

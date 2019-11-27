@@ -201,7 +201,7 @@ const resStrSchema = sequelize_db.define('Respuesta_Str',{
 				key : 'id'
 			}
 		},
-		respuesta: {type: Sequelize.STRING, allowNull:false,defaultValue:'', validate: {
+		respuesta: {type: Sequelize.STRING,defaultValue:'', validate: {
 			notEmpty: { msg: "Llene los campos requeridos"}
 		}}
 	},{
@@ -229,7 +229,7 @@ const resIntSchema = sequelize_db.define('Respuesta_Int',{
 				key : 'id'
 			}
 		},
-		respuesta: {type: Sequelize.INTEGER, allowNull:false,defaultValue:'', validate: {
+		respuesta: {type: Sequelize.INTEGER,defaultValue:'', validate: {
 			notEmpty: { msg: "Llene los campos requeridos"}
 		}}
 	},{
@@ -237,6 +237,34 @@ const resIntSchema = sequelize_db.define('Respuesta_Int',{
 		underscored: true,
 		timestamps: true,
 	}
+);
+
+const resDateSchema = sequelize_db.define('Respuesta_Date',{
+	id: {type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true},
+	id_formato: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		references: {
+			model : formatSchema,
+			key : 'id'
+		}
+	},
+	id_campo: {
+		type: Sequelize.INTEGER,
+		allowNull: false,
+		references: {
+			model : campoSchema,
+			key : 'id'
+		}
+	},
+	respuesta: {type: Sequelize.INTEGER,defaultValue:'', validate: {
+		notEmpty: { msg: "Llene los campos requeridos"}
+	}}
+},{
+	freezeTableName: true,
+	underscored: true,
+	timestamps: true,
+}
 );
 
 const resTextSchema = sequelize_db.define('Respuesta_Text',{
@@ -257,7 +285,7 @@ const resTextSchema = sequelize_db.define('Respuesta_Text',{
 				key : 'id'
 			}
 		},
-		respuesta: {type: Sequelize.TEXT, allowNull:false,defaultValue:'', validate: {
+		respuesta: {type: Sequelize.TEXT,defaultValue:'', validate: {
 			notEmpty: { msg: "Llene los campos requeridos"}
 		}}
 	},{
@@ -292,20 +320,50 @@ const resOpSchema = sequelize_db.define('Respuesta_Opcion',{
 	}
 );
 
+plantillaSchema.belongsTo(tipoSchema, {foreignKey: 'id_tipo', targetKey: 'id'});
+tipoSchema.hasMany(plantillaSchema, {foreignKey: 'id_tipo', sourceKey: 'id',});
+
 campoSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
-plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id', onDelete: 'cascade', hooks: true});
+plantillaSchema.hasMany(campoSchema, {foreignKey: 'id_plantilla', sourceKey: 'id',});
 
 formatSchema.belongsTo(plantillaSchema, {foreignKey: 'id_plantilla', targetKey: 'id'});
-plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'id', onDelete: 'cascade', hooks: true});
+plantillaSchema.hasMany(formatSchema, {foreignKey: 'id_plantilla', sourceKey: 'id',});
 
 formatSchema.belongsTo(nnaSchema, {foreignKey: 'id_nna', targetKey: 'exp'});
 nnaSchema.hasMany(formatSchema,  {foreignKey: 'id_nna', sourceKey: 'exp'});
 
-opcionSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id', onDelete: 'cascade'});
+opcionSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id', });
 campoSchema.hasMany(opcionSchema,  {foreignKey: 'id_campo', sourceKey: 'id'});
 
 campoSchema.belongsTo(datoConsistenteSchema,  {foreignKey: 'id_dato_consistente', targetKey: 'id'});
 datoConsistenteSchema.hasMany(campoSchema,    {foreignKey: 'id_dato_consistente', sourceKey: 'id'});
+
+resIntSchema.belongsTo(formatSchema, {foreignKey: 'id_formato', targetKey: 'id'});
+formatSchema.hasMany(resIntSchema,   {foreignKey: 'id_formato', sourceKey: 'id'});
+
+resStrSchema.belongsTo(formatSchema, {foreignKey: 'id_formato', targetKey: 'id'});
+formatSchema.hasMany(resStrSchema,   {foreignKey: 'id_formato', sourceKey: 'id'});
+
+resTextSchema.belongsTo(formatSchema, {foreignKey: 'id_formato', targetKey: 'id'});
+formatSchema.hasMany(resTextSchema,   {foreignKey: 'id_formato', sourceKey: 'id'});
+
+resDateSchema.belongsTo(formatSchema, {foreignKey: 'id_formato', targetKey: 'id'});
+formatSchema.hasMany(resDateSchema,   {foreignKey: 'id_formato', sourceKey: 'id'});
+
+resIntSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+campoSchema.hasMany(resIntSchema,   {foreignKey: 'id_campo', sourceKey: 'id'});
+
+resStrSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+campoSchema.hasMany(resStrSchema,   {foreignKey: 'id_campo', sourceKey: 'id'});
+
+resTextSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+campoSchema.hasMany(resTextSchema,   {foreignKey: 'id_campo', sourceKey: 'id'});
+
+resDateSchema.belongsTo(campoSchema, {foreignKey: 'id_campo', targetKey: 'id'});
+campoSchema.hasMany(resDateSchema,   {foreignKey: 'id_campo', sourceKey: 'id'});
+
+opcionSchema.belongsToMany(resIntSchema, {through: resOpSchema, foreignKey:'id_respuesta', otherKey: 'id_respuesta'})
+resIntSchema.belongsToMany(opcionSchema, {through: resOpSchema, foreignKey:'id', otherKey:'id_opcion'})
 
 module.exports = {
 	plantilla : plantillaSchema,
@@ -315,6 +373,7 @@ module.exports = {
 	respuesta_str : resStrSchema,
 	respuesta_int : resIntSchema,
 	respuesta_text : resTextSchema,
+	respuesta_date : resDateSchema,
 	resop : resOpSchema,
 	datoConst : datoConsistenteSchema
 }	

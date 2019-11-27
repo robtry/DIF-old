@@ -1,4 +1,6 @@
 const usuarioSchema = require('../models/usuario_model').User;
+const formatoSchema = require('../models/plantilla_model').formato;
+const plantillaSchema = require('../models/plantilla_model').plantilla
 
 const getTipo = require('./active_controller').getTipo;
 const getUserRoute = require('./active_controller').getUserRoute;
@@ -14,11 +16,24 @@ module.exports = {
 	//only admins
 
 	getUsuario : (req, res) => {
-		usuarioSchema.findByPk(req.params.id)
+		  
+		//https://sequelize.org/master/manual/models-usage.html#eager-loading
+		usuarioSchema.findByPk(req.params.id, {
+				include: [
+					{
+						model: formatoSchema,
+						include: [
+			  				{
+								model: plantillaSchema, required: false
+							}
+						]
+					}]
+			}) 
 			.then(user => {
+				console.log(user);
 				res.render('usuario/show',{
 					nickname:user.nickname, nombre: user.nombre, app : user.app, apm : user.apm,
-					no_cedula : user.no_cedula, role: user.id_tipo
+					no_cedula : user.no_cedula, role: user.id_tipo, formatos: user.Formatos
 				});
 			})
 			.catch(err => console.log("--Error in Get Edit--\n" + err));

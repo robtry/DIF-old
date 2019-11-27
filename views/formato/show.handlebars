@@ -21,15 +21,25 @@
 		{{#if es_abierta}}
 			{{!-- input fiel --}}
 			{{#if dato_int}}
-				<input type="number" class="form-control" name="{{id}}" placeholder="">
+				{{#each Respuesta_Ints}}
+					<p>{{respuesta}}</p>
+				{{/each}}
 			{{else}}{{#if dato_string}}
-				<input type="text" class="form-control" name="{{id}}" placeholder="">
+				{{#each Respuesta_Strs}}
+					<p>{{respuesta}}</p>
+				{{/each}}
 			{{else}}{{#if dato_text}}
-				<textarea class="form-control" rows="3" name="{{id}}"></textarea>
+				{{#each Respuesta_Texts}}
+					<p>{{respuesta}}</p>
+				{{/each}}
 			{{else}}{{#if dato_fecha}}
-				<input type="date" class="form-control" name="{{id}}" placeholder="">
+				{{#each Respuesta_Dates}}
+					<p>{{pregunta}}</p>
+				{{/each}}
 			{{else}}
-				<input type="time" class="form-control" name="{{id}}" placeholder="">
+				{{#each Respuesta_Strs}}
+					<p>{{respuesta}}</p>
+				{{/each}}
 			{{/if}}{{/if}}{{/if}}{{/if}}
 
 		{{else}}{{#if es_cerrada}}

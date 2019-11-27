@@ -68,7 +68,7 @@
 
 				<div class="col-md-4 mb-3">
 					<label for="fecha_nacimiento">Fecha Nacimiento</label>
-					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}}>					
+					<input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value={{fecha_nacimiento}}>
 				</div>
 			</div>
 
@@ -176,5 +176,17 @@
 			<br>
 			<button class="btn btn-primary btn-lg" type="submit">{{action_btn}}</button>
 		</form>
+		<br><br>
+		{{#if show_formats}}
+			<h2>Formatos</h2>
+			{{#each plan}}
+				<a href="/formato/agregar/{{id}}/{{../exp}}" class="btn btn-sm btn-outline-light">Editar</a>
+				<h6>{{nombre}}</h6>
+				{{#if descripcion}}
+					<p>{{descripcion}}</p>
+				{{/if}}
+				<br>
+			{{/each}}
+		{{/if}}
 	</div>
 </div>

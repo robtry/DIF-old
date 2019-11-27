@@ -42,7 +42,7 @@ module.exports = {
         derechoSchema.create({
             articulo: articulo, 
             derecho: derecho
-        }).then()
+        }).then(() => redirect('/derechos'))
            .catch(err => { console.log(err)});
     },
 
@@ -50,7 +50,7 @@ module.exports = {
         let {  nivel } = req.body;
         escolaridadSchema.create({
             nivel : nivel
-        }).then()
+        }).then(() => redirect('/escolaridades'))
            .catch(err => { console.log(err)});
     },
 
@@ -58,7 +58,7 @@ module.exports = {
         let {  nombre } = req.body;
         enfermedadSchema.create({
            nombre : nombre
-        }).then()
+        }).then(() => redirect('/enfermedades'))
            .catch(err => { console.log(err)});
     },
 
@@ -68,7 +68,7 @@ module.exports = {
            dato: dato,
            es_multivalor : multivalor
 
-        }).then()
+        }).then(() => redirect('/datosconstantes'))
            .catch(err => { console.log(err)});
     }
     

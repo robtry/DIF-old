@@ -16,6 +16,8 @@ const usuarioRouter = require('./routes/usuarioRoute');
 const nnaRouter     = require('./routes/nnaRoute');
 const plantilaRouter = require('./routes/plantillaRoute');
 const auxiliarsRouter = require('./routes/auxiliarsRoutes');
+const formatRouter = require('./routes/formatoRoutes');
+const searchRouter = require('./routes/searchRoutes');
 
 // Database Connection
 sequelize_con
@@ -40,7 +42,7 @@ app.use(bodyParser.urlencoded({ extended : false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Set up Routes
 app.use(welcomeRouter);
@@ -48,6 +50,8 @@ app.use(usuarioRouter);
 app.use(nnaRouter);
 app.use(plantilaRouter);
 app.use(auxiliarsRouter);
+app.use(formatRouter);
+app.use(searchRouter);
 
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`))

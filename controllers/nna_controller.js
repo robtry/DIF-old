@@ -6,6 +6,8 @@ const denunciaSchema = require('../models/denuncia_model').denuncia;
 const domicilioSchema = require('../models/nna_model').domicilio;
 const nnaDerechoSchema = require('../models/nna_model').nnaDerecho;
 const nnaEnfermedad = require('../models/nna_model').nnaEnfermedad;
+const plantillaSchema = require('../models/plantilla_model').plantilla;
+//const tipoP = require('../models/auxiliar_model').tipoPu;
 
 const getErrorMessages = require('./active_controller').getErrorMessages;
 
@@ -14,7 +16,8 @@ const getRenderData = async (req, res) => {
 		const esc = await escolariadSchema.findAll();
 		const der = await derechoSchema.findAll();
 		const enf = await enfermedadSchema.findAll();
-		res.render('nna/add', {esc, der, enf, ...req.values})
+		const plan = await plantillaSchema.findAll();
+		res.render('nna/add', {esc, der, enf, plan, ...req.values})
 	} catch(err) {
 		console.log("--Error rendering data: \n" + err);
 	}
@@ -49,6 +52,7 @@ module.exports = {
 			})
 			.catch(err => console.log("--Error getting NNAs--\n" + err));
 	},
+
 	getAgregarNNA : async (req, res) => {
 		req.values = {route:"/nna/agregar", action_btn:"Agregar"};
 		getRenderData(req, res);
@@ -157,14 +161,15 @@ module.exports = {
 		//console.log(req.params.exp)
 		const nna = await nnaSchema.findByPk(req.params.exp, {include: [ enfermedadSchema, derechoSchema, domicilioSchema, denunciaSchema]});
 
-		console.log(nna)
+		//console.log(nna)
 		//console.log(nna.Denuncia)
-		console.log(nna.Enfermedads)
-		console.log(nna.Derechos)
-		console.log(nna.Domicilios)
-		return
+		//console.log(nna.Enfermedads)
+		//console.log(nna.Derechos)
+		//console.log(nna.Domicilios)
+		//return
 		req.values = {
 			route:"/nna/editar/" + nna.exp, action_btn:"Actualizar",
+			show_formats:true,
 			nombre:nna.nombre, app:nna.app, apm:nna.apm,
 			exp:nna.exp, sexo:nna.sexo, fecha_nacimiento:nna.fecha_nacimiento,
 			peso:nna.peso, talla:nna.talla, escolaridad:nna.id_escolaridad,
@@ -188,115 +193,55 @@ module.exports = {
 	},
 
 	//post
-	editNNA: (req, res) =>{
-		let {nombre, app, apm, exp, sexo, fecha_nacimiento, peso, talla, escolaridad, //
-			av_prev, act_seg, fecha_denuncia
-		} = req.body;
+	editNNA: async (req, res) => {
 
-		//nombre = ( nombre == '') ? null : nombre;
-		//exp = (exp == '') ? null : exp;
-		app = (app == '') ? null : app;
-		apm = (apm == '' ) ? null : apm;
-		sexo = (sexo == '') ? null : sexo;
-		fecha_nacimiento = (fecha_nacimiento == '') ? null : fecha_nacimiento;
-		peso = (peso == '') ? null : peso;
-		talla = (talla == '') ? null : talla;
-		escolaridad = (escolaridad == '') ? null : escolaridad;
-		//denuncia
-		av_prev = (av_prev == '') ? null : av_prev;
-		act_seg = (act_seg == '') ? null : act_seg;
-		//console.log("denunc: " + fecha_denuncia)
-		fecha_denuncia = (fecha_denuncia == '') ? null : fecha_denuncia;
-		//console.log("denunc: " + fecha_denuncia)
+		let {nombre, app, apm, exp, sexo, fecha_nacimiento, //nna
+			peso, talla, escolaridad, //nna 2.0
+			calle, no_ext, no_int, colonia, municipio, cp, referencias, //domicilio
+			av_prev, act_seg, fecha_denuncia, //denuncia
+			derechos, enfermedades
+		} = req.values;
 
-		nnaSchema.findByPk(req.params.exp, {include: [ denunciaSchema ]})
-			.then(nna => {
-				nna.nombre = nombre;
-				nna.app = app;
-				nna.apm = apm;
-				nna.exp = exp;
-				nna.sexo = sexo;
-				nna.fecha_nacimiento = fecha_nacimiento;
-				nna.peso = peso
-				nna.talla = talla
-				nna.id_escolaridad = escolaridad
-				nna.save()
-					.then(nnaCreated =>{
-						
-						if(nna.Denuncia.length > 0){
-							//ya habia
-							nna.Denuncia[0].averiguacion_previa = av_prev;
-							nna.Denuncia[0].seguimiento_acta = act_seg;
-							nna.Denuncia[0].fecha_denuncia = fecha_denuncia;
-							nna.Denuncia[0].save()
-								.then(den => res.redirect('/nnas'))
-								.catch(err => {
-									//console.log(err);
-									escolariadSchema.findAll()
-										.then(esc => {
-											let errors_send  = [];
-											for(let i = 0; i < err.errors.length; i++){
-												errors_send.push({text:err.errors[i].message});
-											}
-											res.render('nna/add', {
-												errors_send,
-												nombre,	app, apm, exp,
-												sexo, fecha_nacimiento,
-												peso, talla, esc, route:"/nna/editar/"+nna.exp,
-												av_prev, act_seg, fecha_denuncia,
-											});
-										})
-										.catch(err => {console.log(err)});
-								});
-						}else{
-							//no habia
-							denunciaSchema.create({
-								av_prev,
-								act_seg,
-								fecha_denuncia,
-								id_nna : nnaCreated.exp
-							})
-								.then(den => res.redirect('/nnas'))
-								.catch(err => {
-									//console.log(err);
-									escolariadSchema.findAll()
-										.then(esc => {
-											let errors_send  = [];
-											for(let i = 0; i < err.errors.length; i++){
-												errors_send.push({text:err.errors[i].message});
-											}
-											res.render('nna/add', {
-												errors_send,
-												nombre,	app, apm, exp,
-												sexo, fecha_nacimiento,
-												peso, talla, esc, route:"/nna/editar/"+nna.exp,
-												av_prev, act_seg, fecha_denuncia,
-											});
-										})
-										.catch(err => {console.log(err)});
-								});
-						}
-					})
-					.catch(err => {
-						//console.log(err);
-						escolariadSchema.findAll()
-							.then(esc => {
-								let errors_send  = [];
-								for(let i = 0; i < err.errors.length; i++){
-									errors_send.push({text:err.errors[i].message});
-								}
-								res.render('nna/add', {
-									errors_send,
-									nombre,	app, apm, exp,
-									sexo, fecha_nacimiento,
-									peso, talla, esc, route:"/nna/editar/"+nna.exp,
-									av_prev, act_seg, fecha_denuncia,
-								});
-							})
-							.catch(err => {console.log(err)});
-					});
-			})
-			.catch(err => console.log(err)); //modificacion en los params
+		let nnaUpdated;
+		try {
+			nnaUpdated = await nnaSchema.findByPk(req.params.exp, {include: [ denunciaSchema ]});
+			nna.nombre = nombre;
+			nna.app = app;
+			nna.apm = apm;
+			nna.exp = exp;
+			nna.sexo = sexo;
+			nna.fecha_nacimiento = fecha_nacimiento;
+			nna.peso = peso
+			nna.talla = talla
+			nna.id_escolaridad = escolaridad
+			nnaUpdated = await nna.save()
+			
+		} catch (err) {
+			const errors_send = getErrorMessages(err);
+			req.values = {  route:"/nna/editar/" + nnaUpdated.exp, action_btn:"Actualizar",
+				show_formats:true,
+				errors_send, ...req.values
+			};
+			return getRenderData(req, res);
+		}
+
+		if(nnaUpdated.Denuncia.length > 0){
+			nnaUpdated.Denuncia[0].averiguacion_previa = av_prev;
+			nnaUpdated.Denuncia[0].seguimiento_acta = act_seg;
+			nnaUpdated.Denuncia[0].fecha_denuncia = fecha_denuncia;
+			try {
+				await nnaUpdated.Denuncia[0].save()
+			} catch (err) {
+				const errors_send = getErrorMessages(err);
+				req.values = {  route:"/nna/editar/" + nnaUpdated.exp, action_btn:"Actualizar",
+					show_formats:true,
+					errors_send, ...req.values
+				};
+				return getRenderData(req, res);
+			}
+		}
+
+		res.redirect('/nna/editar/' + nnaUpdated.exp)
 	},
 
 	deleteNNA: (req, res) => {
@@ -307,6 +252,11 @@ module.exports = {
 					denunciaSchema.destroy({where : {id : nna.Denuncia[i].id}})
 						.then()
 						.catch(err => console.log("--Error in Deleting Nested Denuncia\n" + err));
+				}
+				for(let i = 0; i < nna.Domicilios.length; i++){
+					domicilioSchema.destroy({where : {id : nna.Domicilios[i].id}})
+						.then()
+						.catch(err => console.log("--Error in Deleting Nested Dom\n" + err));
 				}
 				nna.destroy()
 					.then(() => res.send("ok"))
