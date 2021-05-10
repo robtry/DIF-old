@@ -145,3 +145,4 @@ typings/
 config/keys_dev.js
 # Vs
 .vscode/*
+yarn.lock
